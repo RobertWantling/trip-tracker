@@ -108,8 +108,27 @@ form.addEventListener('submit', function (e) {
 });
 
 // listen to input of 'type' to allow change to input fields
-inputType.addEventListener('change', function () {
+inputType.addEventListener('change', function (e) {
   // select closest parent from form row - use indistinctive traversal
-  inputElevation.closest('.form__row').classList.toggle('form__row--hidden'); // 'closest method is like an inverse querySelector so selects parents and not children
-  inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+  // inputElevation.closest('.form__row').classList.toggle('form__row--hidden'); // 'closest method is like an inverse querySelector so selects parents and not children
+  // inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+  // for multiple options
+  if (e.target.value === 'running' || 'walking') {
+    inputElevation.closest('.form__row').classList.add('form__row--hidden');
+    inputCadence.closest('.form__row').classList.remove('form__row--hidden');
+  }
+  if (e.target.value === 'cycling' || 'hike') {
+    inputElevation.closest('.form__row').classList.remove('form__row--hidden');
+    inputCadence.closest('.form__row').classList.add('form__row--hidden');
+  }
+  if (e.target.value === 'hike') {
+    inputElevation.closest('.form__row').classList.remove('form__row--hidden');
+    inputCadence.closest('.form__row').classList.add('form__row--hidden');
+  }
+  if (e.target.value === 'walking') {
+    inputElevation.closest('.form__row').classList.add('form__row--hidden');
+    inputCadence.closest('.form__row').classList.remove('form__row--hidden');
+  }
+  if (e.target.value === 'climb') {
+  }
 });
