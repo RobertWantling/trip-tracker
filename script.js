@@ -129,7 +129,7 @@ class App {
 
   _toggleElevationField() {}
 
-  _newWorkout() {
+  _newWorkout(e) {
     e.preventDefault();
     // clear input fields
     inputDistance.value =
@@ -139,11 +139,10 @@ class App {
         '';
     // display marker
     // when a click happens want to show the form
-    console.log(mapEvent);
     const { lat, lng } = mapEvent.latlng;
     // adds marker to the map
     L.marker([lat, lng])
-      .addTo(map) // trying access map when not in scope
+      .addTo(this.#map) // trying access map when not in scope
       .bindPopup(
         L.popup({
           // leaflet api reference
@@ -159,6 +158,7 @@ class App {
       .openPopup();
   }
 }
+
 // create object out of this ^^ class (app)
 const app = new App();
 // trigger geolocation API - method needs to be called
