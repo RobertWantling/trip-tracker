@@ -16,16 +16,6 @@ const months = [
   'December',
 ];
 
-// all handlers
-const form = document.querySelector('.form');
-const containerWorkouts = document.querySelector('.workouts');
-const inputType = document.querySelector('.form__input--type');
-const inputDistance = document.querySelector('.form__input--distance');
-const inputDuration = document.querySelector('.form__input--duration');
-const inputCadence = document.querySelector('.form__input--cadence');
-const inputElevation = document.querySelector('.form__input--elevation');
-const inputGrade = document.querySelector('.form__input--grade');
-
 // Implement parent class for all workout types
 class Workout {
   // date for new workout
@@ -44,6 +34,7 @@ class Workout {
 
 // child classes
 class Running extends Workout {
+  type = 'running';
   constructor(coords, distance, duration, cadence) {
     // takes same data as parent class + props (cadence)
     super(coords, distance, duration);
@@ -59,6 +50,8 @@ class Running extends Workout {
 }
 
 class Cycling extends Workout {
+  // defining field - will now be available on all instances - same as this.type = 'cycling
+  type = 'cycling';
   constructor(coords, distance, duration, elevationGain) {
     super(coords, distance, duration);
     this.elevationGain = elevationGain;
@@ -74,6 +67,7 @@ class Cycling extends Workout {
 }
 
 class Hike extends Workout {
+  type = 'hiking';
   constructor(coords, distance, duration, elevationGain) {
     super(coords, distance, duration);
     this.elevationGain = elevationGain;
@@ -81,6 +75,7 @@ class Hike extends Workout {
 }
 
 class Walking extends Workout {
+  type = 'walking';
   constructor(coords, distance, duration, cadence) {
     super(coords, distance, duration);
     this.cadence = cadence;
@@ -95,6 +90,7 @@ class Walking extends Workout {
 }
 
 class Climb extends Workout {
+  type = 'climbing';
   constructor(coords, distance, duration, grade) {
     super(coords, distance, duration);
     this.grade = grade;
@@ -112,10 +108,21 @@ console.log(run1, cycling1, walking1);
 // let map, mapEvent;
 
 // APPLICATION ARCHITECTURE
+// Variable input types
+const form = document.querySelector('.form');
+const containerWorkouts = document.querySelector('.workouts');
+const inputType = document.querySelector('.form__input--type');
+const inputDistance = document.querySelector('.form__input--distance');
+const inputDuration = document.querySelector('.form__input--duration');
+const inputCadence = document.querySelector('.form__input--cadence');
+const inputElevation = document.querySelector('.form__input--elevation');
+const inputGrade = document.querySelector('.form__input--grade');
+
 class App {
   // private instance properties (want everything in the APP class - so define the map and mapevent as properties of the app object - use private class field with hash)
   #map;
   #mapEvent; // now properties that are gonna be present on all instances created through this class
+  #workouts = [];
 
   ////////////////////////////////////////////////////////////////////////////
 
@@ -131,7 +138,7 @@ class App {
     inputType.addEventListener('change', this._toggleElevationField);
   }
 
-  ////////////////////////////////////////////////////////////////////////////
+  // GET POSITION ////////////////////////////////////////////////////////////////////
 
   _getPosition() {
     // geolocation api
@@ -145,7 +152,7 @@ class App {
       );
   }
 
-  ////////////////////////////////////////////////////////////////////////////
+  // LOAD MAP ////////////////////////////////////////////////////////////////////////
 
   // this LOADMAP method is called by getCurrentPos function
   _loadMap(position) {
@@ -181,7 +188,7 @@ class App {
     // 'this' keyword points to map b that is where the event handler points to - so need to use bind again to override the location to the APP object
   }
 
-  ////////////////////////////////////////////////////////////////////////////
+  // SHOW FORM ///////////////////////////////////////////////////////////////////////
 
   _showForm(mapE) {
     this.#mapEvent = mapE;
@@ -189,7 +196,7 @@ class App {
     inputDistance.focus();
   }
 
-  ////////////////////////////////////////////////////////////////////////////
+  // TOGGLE //////////////////////////////////////////////////////////////////////////
 
   _toggleElevationField(e) {
     if (e.target.value === 'running') {
@@ -204,7 +211,7 @@ class App {
       inputGrade.closest('.form__row').classList.add('form__row--hidden');
       inputCadence.closest('.form__row').classList.add('form__row--hidden');
     }
-    if (e.target.value === 'hike') {
+    if (e.target.value === 'hiking') {
       inputElevation
         .closest('.form__row')
         .classList.remove('form__row--hidden');
@@ -216,29 +223,120 @@ class App {
       inputGrade.closest('.form__row').classList.add('form__row--hidden');
       inputCadence.closest('.form__row').classList.remove('form__row--hidden');
     }
-    if (e.target.value === 'climb') {
+    if (e.target.value === 'climbing') {
       inputGrade.closest('.form__row').classList.remove('form__row--hidden');
       inputCadence.closest('.form__row').classList.add('form__row--hidden');
       inputElevation.closest('.form__row').classList.add('form__row--hidden');
     }
   }
 
-  ////////////////////////////////////////////////////////////////////////////
+  // NEW WORKOUT /////////////////////////////////////////////////////////////////////
 
   _newWorkout(e) {
+    // helper functions
+    // when use rest param get an array - so can loop over
+    const validInputs = (...inputs) =>
+      inputs.every(input => Number.isFinite(input)); // loop over check if number is finite or not - only return true if all el are true ^
+    const allPositive = (...inputs) => inputs.every(inp => inp > 0);
+
     e.preventDefault();
 
-    // clear input fields
+    // Get data from form
+    const type = inputType.value;
+    const distance = +inputDistance.value; // '+' Unary Operator turn to num
+    const duration = +inputDuration.value;
+    const grade = +inputGrade.value;
+    const { lat, lng } = this.#mapEvent.latlng;
+    let workout;
+
+    // Check if data is valid
+
+    // If workout running, create running object
+    if (type === 'running') {
+      const cadence = +inputCadence.value;
+      // Check if data is valid - use guard clause - check for opposite if true return function
+      if (
+        // !Number.isFinite(distance) ||
+        // !Number.isFinite(duration) ||
+        // !Number.isFinite(cadence)
+        !validInputs(distance, duration, cadence) ||
+        !allPositive(distance, duration, cadence)
+      )
+        return alert('Inputs have to be positive numbers!'); // if distance is NAN return asap
+
+      workout = new Running([lat, lng], distance, duration, cadence); // redefine workout so able to access out of scope
+    }
+
+    // If workout cycling, create cycling object
+    if (type === 'cycling') {
+      const elevation = +inputElevation.value;
+
+      if (
+        !validInputs(distance, duration, elevation) ||
+        !allPositive(distance, duration)
+      )
+        return alert('Inputs have to be positive numbers!');
+
+      workout = new Cycling([lat, lng], distance, duration, elevation);
+    }
+
+    // If workout hiking, create hiking object
+    if (type === 'hiking') {
+      const elevation = +inputElevation.value;
+      if (
+        !validInputs(distance, duration, elevation) ||
+        !allPositive(distance, duration, elevation)
+      )
+        return alert('Inputs have to be positive numbers!');
+
+      workout = new Hiking([lat, lng], distance, duration, elevation);
+    }
+
+    // If workout walking, create walking object
+    if (type === 'walking') {
+      const elevation = +inputElevation.value;
+      if (
+        !validInputs(distance, duration, cadence) ||
+        !allPositive(distance, duration, cadence)
+      )
+        return alert('Inputs have to be positive numbers!');
+
+      workout = new Walking([lat, lng], distance, duration, cadence);
+    }
+
+    // If workout climbing, create climbing object
+    if (type === 'climbing') {
+      const elevation = +inputElevation.value;
+      if (
+        !validInputs(distance, duration, grade) ||
+        !allPositive(distance, duration, grade)
+      )
+        return alert('Inputs have to be positive numbers!');
+
+      workout = new Climbing([lat, lng], distance, duration, grade);
+    }
+
+    // Add/push new object to workout array
+    this.#workouts.push(workout);
+    console.log(workout);
+
+    // Render workout on map as marker
+    this.renderWorkoutMarker(workout); // pass in workout data to display on map | not a callback function of any other function so no to use 'bind' method
+
+    // Render workout on list
+
+    // Hide form  clear input fields
     inputDistance.value =
       inputDuration.value =
       inputCadence.value =
       inputElevation.value =
+      inputGrade.value =
         '';
-    // display marker
-    // when a click happens want to show the form
-    const { lat, lng } = this.#mapEvent.latlng;
+  }
+
+  renderWorkoutMarker(workout) {
     // adds marker to the map
-    L.marker([lat, lng])
+    L.marker(workout.coords) // important have data in actual workout object needed to tell leaflet where to display the marker
       .addTo(this.#map) // trying access map when not in scope
       .bindPopup(
         L.popup({
@@ -247,15 +345,14 @@ class App {
           minWidth: 100,
           autoClose: false,
           closeOnClick: false,
-          className: 'running-popup',
+          className: `${workout.type}-popup`,
           // all methods for leaflet marker are chainable with 'this'
         })
       )
-      .setPopupContent('Asecent Conquored')
+      .setPopupContent('workout')
       .openPopup();
   }
 }
-
 ////////////////////////////////////////////////////////////////////////////
 // create object out of this ^^ class (app)
 const app = new App();

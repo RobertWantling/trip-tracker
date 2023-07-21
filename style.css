@@ -30,7 +30,7 @@ body {
 
   background-color: #fff;
   padding: 2.5rem;
-
+  margin: 0;
   display: flex;
 }
 
@@ -38,6 +38,17 @@ body {
 a:link,
 a:visited {
   color: var(--color-brand--1);
+}
+
+/* TOP-BANNER */
+.top-banner {
+  overflow: hidden;
+  background-color: #e5e4e2;
+  padding: 20px 10px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  height: 5rem;
 }
 
 /* SIDEBAR */
