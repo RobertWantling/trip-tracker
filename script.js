@@ -24,15 +24,61 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
+const inputGrade = document.querySelector('.form__input--grade');
 
 // Implement parent class for all workout types
 class Workout {
+  // date for new workout
+  date = new Date();
+  // Object should have unique identifier so later access using that ID
+  id = (new Date() + '').splice(-10);
+
   constructor(coords, distance, duration) {
     this.coords = coords; // equal to coordinates get as an input etc.
-    this.distance = distance;
-    this.duration = duration;
+    this.distance = distance; // miles
+    this.duration = duration; // mins
   }
 }
+
+// child classes
+class Running extends Workout {
+  constructor(coords, distance, duration, cadence) {
+    // takes same data as parent class + props (cadence)
+    super(coords, distance, duration);
+    this.cadence = cadence;
+  }
+}
+
+class Cycling extends Workout {
+  constructor(coords, distance, duration, elevationGain) {
+    super(coords, distance, duration);
+    this.elevationGain = elevationGain;
+  }
+}
+
+class Hike extends Workout {
+  constructor(coords, distance, duration, elevationGain) {
+    super(coords, distance, duration);
+    this.elevationGain = elevationGain;
+  }
+}
+
+class Walking extends Workout {
+  constructor(coords, distance, duration, cadence) {
+    super(coords, distance, duration);
+    this.cadence = cadence;
+  }
+}
+
+class Climb extends Workout {
+  constructor(coords, distance, duration, grade) {
+    super(coords, distance, duration);
+    this.grade = grade;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////
+
 // solve scope by creating global varibale and then reassign it later
 // let map, mapEvent;
 
@@ -118,25 +164,32 @@ class App {
   _toggleElevationField(e) {
     if (e.target.value === 'running') {
       inputElevation.closest('.form__row').classList.add('form__row--hidden');
+      inputGrade.closest('.form__row').classList.add('form__row--hidden');
       inputCadence.closest('.form__row').classList.remove('form__row--hidden');
     }
     if (e.target.value === 'cycling') {
       inputElevation
         .closest('.form__row')
         .classList.remove('form__row--hidden');
+      inputGrade.closest('.form__row').classList.add('form__row--hidden');
       inputCadence.closest('.form__row').classList.add('form__row--hidden');
     }
     if (e.target.value === 'hike') {
       inputElevation
         .closest('.form__row')
         .classList.remove('form__row--hidden');
+      inputGrade.closest('.form__row').classList.add('form__row--hidden');
       inputCadence.closest('.form__row').classList.add('form__row--hidden');
     }
     if (e.target.value === 'walking') {
       inputElevation.closest('.form__row').classList.add('form__row--hidden');
+      inputGrade.closest('.form__row').classList.add('form__row--hidden');
       inputCadence.closest('.form__row').classList.remove('form__row--hidden');
     }
     if (e.target.value === 'climb') {
+      inputGrade.closest('.form__row').classList.remove('form__row--hidden');
+      inputCadence.closest('.form__row').classList.add('form__row--hidden');
+      inputElevation.closest('.form__row').classList.add('form__row--hidden');
     }
   }
 
