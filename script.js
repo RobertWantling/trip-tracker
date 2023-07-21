@@ -31,12 +31,14 @@ class Workout {
   // date for new workout
   date = new Date();
   // Object should have unique identifier so later access using that ID
-  id = (new Date() + '').splice(-10);
+  //id = (Date.now() + '').slice(-10); // not pracitcal for real world - as might have numerous users on creating obj at same time so wont work as unique ID
+  // random id from cdn library
+  id = uuid.v4();
 
   constructor(coords, distance, duration) {
-    this.coords = coords; // equal to coordinates get as an input etc.
-    this.distance = distance; // miles
-    this.duration = duration; // mins
+    this.coords = coords; // equal to coordinates get as an input etc. [lat, lng]
+    this.distance = distance; // in miles
+    this.duration = duration; // in mins
   }
 }
 
@@ -46,6 +48,13 @@ class Running extends Workout {
     // takes same data as parent class + props (cadence)
     super(coords, distance, duration);
     this.cadence = cadence;
+    this.calcPace(); // bien call any code in constructor
+  }
+  // calculate pace
+  calcPace() {
+    // min/miles
+    this.pace = this.duration / this.distance;
+    return this.pace;
   }
 }
 
@@ -53,6 +62,14 @@ class Cycling extends Workout {
   constructor(coords, distance, duration, elevationGain) {
     super(coords, distance, duration);
     this.elevationGain = elevationGain;
+    this.calcSpeed();
+  }
+
+  // calculate speed
+  calcSpeed() {
+    // km/h
+    this.speed = this.distance / (this.duration / 60);
+    return this.speed;
   }
 }
 
@@ -67,6 +84,13 @@ class Walking extends Workout {
   constructor(coords, distance, duration, cadence) {
     super(coords, distance, duration);
     this.cadence = cadence;
+    this.calcPace();
+  }
+  // calculate pace
+  calcPace() {
+    // min/miles
+    this.pace = this.duration / this.distance;
+    return this.pace;
   }
 }
 
@@ -77,11 +101,17 @@ class Climb extends Workout {
   }
 }
 
-////////////////////////////////////////////////////////////////////////////
+// test
+const run1 = new Running([39, -12], 5.2, 24, 178);
+const cycling1 = new Cycling([39, -12], 27, 95, 523);
+const walking1 = new Walking([39, -12], 10, 30, 123);
+console.log(run1, cycling1, walking1);
 
+////////////////////////////////////////////////////////////////////////////
 // solve scope by creating global varibale and then reassign it later
 // let map, mapEvent;
 
+// APPLICATION ARCHITECTURE
 class App {
   // private instance properties (want everything in the APP class - so define the map and mapevent as properties of the app object - use private class field with hash)
   #map;
