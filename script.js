@@ -25,6 +25,14 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
+// Implement parent class for all workout types
+class Workout {
+  constructor(coords, distance, duration) {
+    this.coords = coords; // equal to coordinates get as an input etc.
+    this.distance = distance;
+    this.duration = duration;
+  }
+}
 // solve scope by creating global varibale and then reassign it later
 // let map, mapEvent;
 
@@ -32,6 +40,8 @@ class App {
   // private instance properties (want everything in the APP class - so define the map and mapevent as properties of the app object - use private class field with hash)
   #map;
   #mapEvent; // now properties that are gonna be present on all instances created through this class
+
+  ////////////////////////////////////////////////////////////////////////////
 
   constructor() {
     // auto calls soon as page loads
@@ -45,6 +55,8 @@ class App {
     inputType.addEventListener('change', this._toggleElevationField);
   }
 
+  ////////////////////////////////////////////////////////////////////////////
+
   _getPosition() {
     // geolocation api
     if (navigator.geolocation)
@@ -57,7 +69,9 @@ class App {
       );
   }
 
-  // this loadMap method is called by getCurrentPos function
+  ////////////////////////////////////////////////////////////////////////////
+
+  // this LOADMAP method is called by getCurrentPos function
   _loadMap(position) {
     const { latitude } = position.coords;
     const { longitude } = position.coords;
@@ -91,11 +105,15 @@ class App {
     // 'this' keyword points to map b that is where the event handler points to - so need to use bind again to override the location to the APP object
   }
 
+  ////////////////////////////////////////////////////////////////////////////
+
   _showForm(mapE) {
     this.#mapEvent = mapE;
     form.classList.remove('hidden');
     inputDistance.focus();
   }
+
+  ////////////////////////////////////////////////////////////////////////////
 
   _toggleElevationField(e) {
     if (e.target.value === 'running') {
@@ -121,6 +139,8 @@ class App {
     if (e.target.value === 'climb') {
     }
   }
+
+  ////////////////////////////////////////////////////////////////////////////
 
   _newWorkout(e) {
     e.preventDefault();
@@ -153,6 +173,7 @@ class App {
   }
 }
 
+////////////////////////////////////////////////////////////////////////////
 // create object out of this ^^ class (app)
 const app = new App();
 // trigger geolocation API - method needs to be called
