@@ -294,7 +294,7 @@ class App {
 
     // If workout walking, create walking object
     if (type === 'walking') {
-      const elevation = +inputElevation.value;
+      const cadence = +inputCadence.value;
       if (
         !validInputs(distance, duration, cadence) ||
         !allPositive(distance, duration, cadence)
@@ -306,7 +306,7 @@ class App {
 
     // If workout climbing, create climbing object
     if (type === 'climbing') {
-      const elevation = +inputElevation.value;
+      const grade = +inputGrade.value;
       if (
         !validInputs(distance, duration, grade) ||
         !allPositive(distance, duration, grade)
