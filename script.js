@@ -25,10 +25,11 @@ class Workout {
   // random id from cdn library
   id = uuid.v4();
 
-  constructor(coords, distance, duration) {
+  constructor(coords, distance, duration, grade) {
     this.coords = coords; // equal to coordinates get as an input etc. [lat, lng]
     this.distance = distance; // in miles
     this.duration = duration; // in mins
+    this.grade = grade; // v
   }
 }
 
@@ -66,7 +67,7 @@ class Cycling extends Workout {
   }
 }
 
-class Hike extends Workout {
+class Hiking extends Workout {
   type = 'hiking';
   constructor(coords, distance, duration, elevationGain) {
     super(coords, distance, duration);
@@ -89,7 +90,7 @@ class Walking extends Workout {
   }
 }
 
-class Climb extends Workout {
+class Climbing extends Workout {
   type = 'climbing';
   constructor(coords, distance, duration, grade) {
     super(coords, distance, duration);
