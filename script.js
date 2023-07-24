@@ -1,20 +1,4 @@
-// 'use strict';
-
-// ignore for prettier
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
+'use strict';
 
 // Implement parent class for all workout types
 class Workout {
@@ -48,17 +32,23 @@ class Workout {
       'November',
       'December',
     ];
+
+    this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${
+      months[this.date.getMonth()]
+    } ${this.date.getDay()}`;
   }
 }
 
 // child classes
 class Running extends Workout {
   type = 'running';
+
   constructor(coords, distance, duration, cadence) {
     // takes same data as parent class + props (cadence)
     super(coords, distance, duration);
     this.cadence = cadence;
     this.calcPace(); // bien call any code in constructor
+    this._setDescription(); // work due to scope train, the instructor will have access to all methods of the parent class (setDescription)
   }
   // calculate pace
   calcPace() {
@@ -75,6 +65,7 @@ class Cycling extends Workout {
     super(coords, distance, duration);
     this.elevationGain = elevationGain;
     this.calcSpeed();
+    this._setDescription();
   }
 
   // calculate speed
@@ -90,6 +81,7 @@ class Hiking extends Workout {
   constructor(coords, distance, duration, elevationGain) {
     super(coords, distance, duration);
     this.elevationGain = elevationGain;
+    this._setDescription();
   }
 }
 
@@ -99,6 +91,7 @@ class Walking extends Workout {
     super(coords, distance, duration);
     this.cadence = cadence;
     this.calcPace();
+    this._setDescription();
   }
   // calculate pace
   calcPace() {
@@ -113,6 +106,7 @@ class Climbing extends Workout {
   constructor(coords, distance, duration, grade) {
     super(coords, distance, duration);
     this.grade = grade;
+    this._setDescription();
   }
 }
 
@@ -155,6 +149,7 @@ class App {
 
     // listen to input of 'type' to allow change to input fields
     inputType.addEventListener('change', this._toggleElevationField);
+    containerWorkouts.addEventListener('click', this.moveToPopup());
   }
 
   // GET POSITION ////////////////////////////////////////////////////////////////////
@@ -215,6 +210,20 @@ class App {
     inputDistance.focus();
   }
 
+  // HIDE FORM ///////////////////////////////////////////////////////////////////////
+
+  _hideForm() {
+    inputDistance.value =
+      inputDuration.value =
+      inputCadence.value =
+      inputElevation.value =
+      inputGrade.value =
+        '';
+    form.style.display = 'none';
+    form.classList.add('hidden');
+    setTimeout(() => (form.style.display = 'grid'), 1000);
+  }
+
   // TOGGLE //////////////////////////////////////////////////////////////////////////
 
   _toggleElevationField(e) {
@@ -269,6 +278,9 @@ class App {
     let workout;
 
     // Check if data is valid
+
+    // Delete workouts
+    // It s a bit tricky but easy in the end, first I add a delete button on each workout I render, then I add a addEventListener on he, e.target(delete button).parentNode.remove()  (e being the function argument on addEventListener) practically when I press delete button, javascript select that workout which is the button and then remove it.  To delete marker from map I initialize a variable layer on each coords after submit the form, then I remove it in exact same place where delete workouts. A nice explanation for parentNode you can find on w3schools. I don't really know how to explain things, but I hope you understand! :)
 
     // If workout running, create running object
     if (type === 'running') {
@@ -346,12 +358,7 @@ class App {
     this._renderWorkout(workout); // delegated the functionality to the method below
 
     // Hide form  clear input fields
-    inputDistance.value =
-      inputDuration.value =
-      inputCadence.value =
-      inputElevation.value =
-      inputGrade.value =
-        '';
+    this._hideForm();
   }
 
   _renderWorkoutMarker(workout) {
@@ -369,22 +376,23 @@ class App {
           // all methods for leaflet marker are chainable with 'this'
         })
       )
-      .setPopupContent(`workout`)
+      .setPopupContent(
+        `${workout.type === 'running' ? '🏃‍♂️' : '🚴🏻'} ${workout.description}`
+      )
       .openPopup();
   }
 
   _renderWorkout(workout) {
     // create markup HTML that can insert into the DOM wherever there is a new workout
     // data-id - used as custom data attribute, use data properties like this to build a bridge between UI and data that have on application
-    const html = ` 
-   <!-- <li class="workout workout--${workout.name}" 
-data-id="${workout.id}">
-   <h2 class="workout__title">Running on April 14</h2>
+    let html = ` 
+   <li class="workout workout--${workout.type}" data-id="${workout.id}">
+   <h2 class="workout__title">${workout.description}</h2>
    <div class="workout__details">
-     <span class="workout__icon">${workout.type === 'running' ? '🏃‍♂️' : '🚴🏻'} ${
-      workout.type === 'walking' ? '◀︎' : '🧗'
-    } </span>
-     <span class="workout__value">${workout.distance}/span>
+     <span class="workout__icon">${
+       workout.type === 'running' ? '🏃‍♂️' : '🚴🏻'
+     }</span>
+     <span class="workout__value">${workout.distance}</span>
      <span class="workout__unit">km</span>
    </div>
    <div class="workout__details">
@@ -392,6 +400,38 @@ data-id="${workout.id}">
      <span class="workout__value">${workout.duration}</span>
      <span class="workout__unit">min</span>
    </div> `;
+
+    if (workout.type === 'running')
+      html += `
+  <div class="workout__details">
+    <span class="workout__icon">⚡️</span>
+    <span class="workout__value">${workout.pace.toFixed(1)}</span>
+    <span class="workout__unit">min/km</span>
+  </div>
+  <div class="workout__details">
+    <span class="workout__icon">🦶🏼</span>
+    <span class="workout__value">${workout.cadence}</span>
+    <span class="workout__unit">spm</span>
+  </div>
+  </li>
+      `;
+
+    if (workout.type === 'cycling')
+      html += `
+  <div class="workout__details">
+      <span class="workout__icon">⚡️</span>
+      <span class="workout__value">${workout.speed.toFixed(1)}</span>
+      <span class="workout__unit">km/h</span>
+  </div>
+  <div class="workout__details">
+    <span class="workout__icon">⛰</span>
+    <span class="workout__value">${workout.elevationGain}</span>
+    <span class="workout__unit">metres</span>
+  </div>
+  </li> `;
+
+    // Insert form as a sibling element - This one will add the new element as a sibling el at end of the form
+    form.insertAdjacentHTML('afterend', html);
   }
 }
 
