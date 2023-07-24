@@ -32,6 +32,9 @@ body {
   overscroll-behavior-y: none;
 
   background-color: #fff;
+  background-image: url('test.jpeg');
+  background-repeat: repeat;
+  background-position: top;
   padding: 2.5rem;
   margin: 0;
   display: flex;

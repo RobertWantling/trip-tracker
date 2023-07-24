@@ -149,6 +149,8 @@ class App {
 
     // listen to input of 'type' to allow change to input fields
     inputType.addEventListener('change', this._toggleElevationField);
+
+    // When have el that want to attach to event listener but hasnt been created yet - will use event delegation
     containerWorkouts.addEventListener('click', this.moveToPopup());
   }
 
