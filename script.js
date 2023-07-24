@@ -31,6 +31,24 @@ class Workout {
     this.duration = duration; // in mins
     this.grade = grade; // v
   }
+
+  _setDescription() {
+    // prettier-ignore
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+  }
 }
 
 // child classes
@@ -322,9 +340,10 @@ class App {
     console.log(workout);
 
     // Render workout on map as marker
-    this.renderWorkoutMarker(workout); // pass in workout data to display on map | not a callback function of any other function so no to use 'bind' method
+    this._renderWorkoutMarker(workout); // pass in workout data to display on map | not a callback function of any other function so no to use 'bind' method
 
     // Render workout on list
+    this._renderWorkout(workout); // delegated the functionality to the method below
 
     // Hide form  clear input fields
     inputDistance.value =
@@ -335,7 +354,7 @@ class App {
         '';
   }
 
-  renderWorkoutMarker(workout) {
+  _renderWorkoutMarker(workout) {
     // adds marker to the map
     L.marker(workout.coords) // important have data in actual workout object needed to tell leaflet where to display the marker
       .addTo(this.#map) // trying access map when not in scope
@@ -350,10 +369,32 @@ class App {
           // all methods for leaflet marker are chainable with 'this'
         })
       )
-      .setPopupContent('workout')
+      .setPopupContent(`workout`)
       .openPopup();
   }
+
+  _renderWorkout(workout) {
+    // create markup HTML that can insert into the DOM wherever there is a new workout
+    // data-id - used as custom data attribute, use data properties like this to build a bridge between UI and data that have on application
+    const html = ` 
+   <!-- <li class="workout workout--${workout.name}" 
+data-id="${workout.id}">
+   <h2 class="workout__title">Running on April 14</h2>
+   <div class="workout__details">
+     <span class="workout__icon">${workout.type === 'running' ? '🏃‍♂️' : '🚴🏻'} ${
+      workout.type === 'walking' ? '◀︎' : '🧗'
+    } </span>
+     <span class="workout__value">${workout.distance}/span>
+     <span class="workout__unit">km</span>
+   </div>
+   <div class="workout__details">
+     <span class="workout__icon">⏱</span>
+     <span class="workout__value">${workout.duration}</span>
+     <span class="workout__unit">min</span>
+   </div> `;
+  }
 }
+
 ////////////////////////////////////////////////////////////////////////////
 // create object out of this ^^ class (app)
 const app = new App();
