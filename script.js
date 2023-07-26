@@ -364,8 +364,13 @@ class App {
   }
 
   _renderWorkoutMarker(workout) {
+    let myIcon = L.icon({
+      iconUrl: 'icon.png',
+      iconSize: [30, 30],
+    });
     // adds marker to the map
-    L.marker(workout.coords) // important have data in actual workout object needed to tell leaflet where to display the marker
+    //L.marker(workout.coords) // important have data in actual workout object needed to tell leaflet where to display the marker
+    L.marker(workout.coords, { icon: myIcon })
       .addTo(this.#map) // trying access map when not in scope
       .bindPopup(
         L.popup({
@@ -383,6 +388,20 @@ class App {
       )
       .openPopup();
   }
+
+  // .bindPopup(
+  // L.popup({
+  //  leaflet api reference
+  // maxWidth: 250,
+  // minWidth: 100,
+  // autoClose: false,
+  // closeOnClick: false,
+  // className: `${workout.type}
+  // -popup`,
+  //   all methods for leaflet
+  // marker are chainable with
+  // 'this'
+  // })
 
   _renderWorkout(workout) {
     // create markup HTML that can insert into the DOM wherever there is a new workout
