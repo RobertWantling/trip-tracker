@@ -153,7 +153,7 @@ class App {
     this._getPosition();
 
     // Get data from local storage ////////////////////////////////////////////////////////////////////////
-    this._getLocalStorage();
+    //this._getLocalStorage();
 
     // ATTACH EVENT HANDLERS ////////////////////////////////////////////////////////////////////////
     // submit workout form
@@ -192,7 +192,7 @@ class App {
     );
     const coords = [latitude, longitude];
     // whatever string passed into 'map' function must be ID name of element in HTML - it is in   that element where the map is displayed
-    console.log(this);
+
     this.#map = L.map('map').setView(coords, this.#mapoomLevel);
     // customised leaflet map
     // L.tileLayer(
@@ -215,6 +215,9 @@ class App {
     // Handling clicks on map
     this.#map.on('click', this._showForm.bind(this));
     // 'this' keyword points to map b that is where the event handler points to - so need to use bind again to override the location to the APP object
+
+    // Loading workouts lists and markers from local storage - use leaflets method 'whenReady' call getLocal only when map is loaded
+    this.#map.whenReady(this._getLocalStorage.bind(this));
 
     // Render markers from local storage (map available here due to ASYNC)
     this.#workouts.forEach(work => {
@@ -371,7 +374,6 @@ class App {
 
     // Add/push new object to workout array
     this.#workouts.push(workout);
-    console.log(workout);
 
     // Render workout on map as marker
     this._renderWorkoutMarker(workout); // pass in workout data to display on map | not a callback function of any other function so no to use 'bind' method
@@ -480,13 +482,12 @@ class App {
 
   _moveToPopup(e) {
     const workoutEl = e.target.closest('.workout'); // 'closest' allows to move up chain to closest parent
-    console.log(workoutEl); // closest takes care of selecting the entire element, gain access to ID - This ID will be used to find the workout array - ables to build a bridge between UI and data in application
+    //console.log(workoutEl); // closest takes care of selecting the entire element, gain access to ID - This ID will be used to find the workout array - ables to build a bridge between UI and data in application
     if (!workoutEl) return;
 
     const workout = this.#workouts.find(
       work => work.id === workoutEl.dataset.id
     );
-    console.log(workout);
 
     // take coords from wokrout el and move map to that position - use leaflet method avail on all map objects - setview() sets view of map with given coords + animation options
 
@@ -499,7 +500,7 @@ class App {
     });
 
     // using the public interface
-    workout.click();
+    // workout.click();
   }
 
   // doesnt need any parameters as get workouts from workout property
@@ -509,6 +510,7 @@ class App {
     localStorage.setItem('workouts', JSON.stringify(this.#workouts)); // use JSON convert any object to a string
   }
 
+  // Because converted object to string and back again it lost prototype chain - now just regualr objects without any previous methods wont inherit
   _getLocalStorage() {
     // Parse opposite of 'stringify' converts back to an object
     const data = JSON.parse(localStorage.getItem('workouts'));
@@ -520,9 +522,17 @@ class App {
     this.#workouts = data;
 
     // Render in the list
-    this.#workouts.forEach(work => {
-      this._renderWorkout(work); // helpful have logic rendering a workout in side bar
+    this.#workouts.forEach(workout => {
+      this._renderWorkout(workout); // helpful have logic rendering a workout in side bar
+      this._renderWorkoutMarker(workout);
     });
+  }
+
+  // Delete all workouts
+  reset() {
+    localStorage.removeItem('workouts');
+    // 'location' big object contains lots of methods n props in browser has ability to reload page
+    location.reload();
   }
 }
 
