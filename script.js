@@ -143,7 +143,7 @@ class App {
   #map;
   #mapEvent; // now properties that are gonna be present on all instances created through this class
   #workouts = [];
-  #mapoomLevel = 13;
+  #mapZoomLevel = 13;
 
   ////////////////////////////////////////////////////////////////////////////
 
@@ -193,7 +193,7 @@ class App {
     const coords = [latitude, longitude];
     // whatever string passed into 'map' function must be ID name of element in HTML - it is in   that element where the map is displayed
 
-    this.#map = L.map('map').setView(coords, this.#mapoomLevel);
+    this.#map = L.map('map').setView(coords, this.#mapZoomLevel);
     // customised leaflet map
     // L.tileLayer(
     // 'https://{s}.tile.openstreetmap.tiles/outdoors/{z}/{x}/{y}.png',
@@ -245,6 +245,17 @@ class App {
     form.style.display = 'none';
     form.classList.add('hidden');
     setTimeout(() => (form.style.display = 'grid'), 1000);
+  }
+
+  _highlightWorkout() {
+    this.workoutEl.on('click', function (eClick) {
+      const selectReqId = workout.id;
+      const formWrkOut = document.querySelector(`[data-id="${selectReqId}"]`);
+      formWrkOut.style.backgroundColor = '#2F5D62';
+      setTimeout(function () {
+        formWrkOut.style.backgroundColor = '#42484d';
+      }, 2000);
+    });
   }
 
   // TOGGLE INPUT FIELDS //////////////////////////////////////////////////////////////////////////
@@ -386,6 +397,8 @@ class App {
 
     // Set local sotrage to all workouts
     this._setLocalStorage();
+
+    this._highlightWorkout();
   }
 
   // RENDER WORKOUT MARKER /////////////////////////////////////////////////////////////////////
@@ -488,16 +501,24 @@ class App {
     const workout = this.#workouts.find(
       work => work.id === workoutEl.dataset.id
     );
-
     // take coords from wokrout el and move map to that position - use leaflet method avail on all map objects - setview() sets view of map with given coords + animation options
 
-    this.#map.setView(workout.coords, this.#mapoomLevel, {
-      // pass in an object of options
-      animate: true,
-      pan: {
-        duration: 1,
-      },
-    });
+    this.#map
+      .setView(workout.coords, this.#mapZoomLevel, {
+        // pass in an object of options
+        animate: true,
+        pan: {
+          duration: 1,
+        },
+      })
+      .on('click', function (eClick) {
+        const selectReqId = workout.id;
+        const formWrkOut = document.querySelector(`[data-id="${selectReqId}"]`);
+        formWrkOut.style.backgroundColor = '#2F5D62';
+        setTimeout(function () {
+          formWrkOut.style.backgroundColor = '#42484d';
+        }, 2000);
+      });
 
     // using the public interface
     // workout.click();
