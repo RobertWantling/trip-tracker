@@ -150,8 +150,8 @@ class App {
     // listen to input of 'type' to allow change to input fields
     inputType.addEventListener('change', this._toggleElevationField);
 
-    // When have el that want to attach to event listener but hasnt been created yet - will use event delegation
-    containerWorkouts.addEventListener('click', this.moveToPopup());
+    // When have el that want to attach to event listener but hasnt been created yet - will use event delegation - add to constructor so its added right at the beginning
+    containerWorkouts.addEventListener('click', this._moveToPopup);
   }
 
   // GET POSITION ////////////////////////////////////////////////////////////////////
@@ -434,6 +434,11 @@ class App {
 
     // Insert form as a sibling element - This one will add the new element as a sibling el at end of the form
     form.insertAdjacentHTML('afterend', html);
+  }
+
+  _moveToPopup(e) {
+    const workoutEl = e.target.closest('.workout');
+    console.log(workoutEl);
   }
 }
 
