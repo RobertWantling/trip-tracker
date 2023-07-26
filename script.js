@@ -147,10 +147,15 @@ class App {
 
   ////////////////////////////////////////////////////////////////////////////
 
+  // auto calls soon as page loads
   constructor() {
-    // auto calls soon as page loads
+    // Get user's position ////////////////////////////////////////////////////////////////////////
     this._getPosition();
 
+    // Get data from local storage ////////////////////////////////////////////////////////////////////////
+    this._getLocalStorage();
+
+    // ATTACH EVENT HANDLERS ////////////////////////////////////////////////////////////////////////
     // submit workout form
     form.addEventListener('submit', this._newWorkout.bind(this)); // method here basically an event handler a function that is going to be called by event listener ^
     // 'this' keyword on newWorkout will have the DOM el from 'form' el - meaning 'this' keyword will point to form and not App object - fix it by using 'bind()'
@@ -210,6 +215,11 @@ class App {
     // Handling clicks on map
     this.#map.on('click', this._showForm.bind(this));
     // 'this' keyword points to map b that is where the event handler points to - so need to use bind again to override the location to the APP object
+
+    // Render markers from local storage (map available here due to ASYNC)
+    this.#workouts.forEach(work => {
+      this._renderWorkoutMarker(work);
+    });
   }
 
   // SHOW FORM ///////////////////////////////////////////////////////////////////////
@@ -357,6 +367,8 @@ class App {
       workout = new Climbing([lat, lng], distance, duration, grade);
     }
 
+    ////////////////// Good habit to export functionality into thier own methods or own functions
+
     // Add/push new object to workout array
     this.#workouts.push(workout);
     console.log(workout);
@@ -369,6 +381,9 @@ class App {
 
     // Hide form  clear input fields
     this._hideForm();
+
+    // Set local sotrage to all workouts
+    this._setLocalStorage();
   }
 
   // RENDER WORKOUT MARKER /////////////////////////////////////////////////////////////////////
@@ -485,6 +500,29 @@ class App {
 
     // using the public interface
     workout.click();
+  }
+
+  // doesnt need any parameters as get workouts from workout property
+  // In practise only use local storage for small amounts of data (blocking issue)
+  _setLocalStorage() {
+    // local storage is api browser provides - 1st arg name 2nd arg a string want to store assos with 'workouts' key (key, value store)
+    localStorage.setItem('workouts', JSON.stringify(this.#workouts)); // use JSON convert any object to a string
+  }
+
+  _getLocalStorage() {
+    // Parse opposite of 'stringify' converts back to an object
+    const data = JSON.parse(localStorage.getItem('workouts'));
+
+    // when wokrouts array is empty
+    if (!data) return;
+
+    // if had some data in local storage, set that workout array to data had before
+    this.#workouts = data;
+
+    // Render in the list
+    this.#workouts.forEach(work => {
+      this._renderWorkout(work); // helpful have logic rendering a workout in side bar
+    });
   }
 }
 
