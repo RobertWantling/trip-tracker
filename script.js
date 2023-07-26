@@ -16,6 +16,8 @@ class Workout {
     this.grade = grade; // v
   }
 
+  // SET DESCRIPTION /////////////////////////////////////////////////////////////////////
+
   _setDescription() {
     // prettier-ignore
     const months = [
@@ -151,7 +153,7 @@ class App {
     inputType.addEventListener('change', this._toggleElevationField);
 
     // When have el that want to attach to event listener but hasnt been created yet - will use event delegation - add to constructor so its added right at the beginning
-    containerWorkouts.addEventListener('click', this._moveToPopup);
+    containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
   }
 
   // GET POSITION ////////////////////////////////////////////////////////////////////
@@ -226,7 +228,7 @@ class App {
     setTimeout(() => (form.style.display = 'grid'), 1000);
   }
 
-  // TOGGLE //////////////////////////////////////////////////////////////////////////
+  // TOGGLE INPUT FIELDS //////////////////////////////////////////////////////////////////////////
 
   _toggleElevationField(e) {
     if (e.target.value === 'running') {
@@ -363,14 +365,15 @@ class App {
     this._hideForm();
   }
 
+  // RENDER WORKOUT MARKER /////////////////////////////////////////////////////////////////////
+
   _renderWorkoutMarker(workout) {
     let myIcon = L.icon({
-      iconUrl: 'icon.png',
+      iconUrl: 'marker.png',
       iconSize: [30, 30],
     });
     // adds marker to the map
-    //L.marker(workout.coords) // important have data in actual workout object needed to tell leaflet where to display the marker
-    L.marker(workout.coords, { icon: myIcon })
+    L.marker(workout.coords, { icon: myIcon }) // important have data in actual workout object needed to tell leaflet where to display the marker
       .addTo(this.#map) // trying access map when not in scope
       .bindPopup(
         L.popup({
@@ -389,19 +392,7 @@ class App {
       .openPopup();
   }
 
-  // .bindPopup(
-  // L.popup({
-  //  leaflet api reference
-  // maxWidth: 250,
-  // minWidth: 100,
-  // autoClose: false,
-  // closeOnClick: false,
-  // className: `${workout.type}
-  // -popup`,
-  //   all methods for leaflet
-  // marker are chainable with
-  // 'this'
-  // })
+  // RENDER WORKOUT /////////////////////////////////////////////////////////////////////
 
   _renderWorkout(workout) {
     // create markup HTML that can insert into the DOM wherever there is a new workout
@@ -455,9 +446,17 @@ class App {
     form.insertAdjacentHTML('afterend', html);
   }
 
+  // MOVE TO CLICKED WORKOUT /////////////////////////////////////////////////////////////////////
+
   _moveToPopup(e) {
-    const workoutEl = e.target.closest('.workout');
-    console.log(workoutEl);
+    const workoutEl = e.target.closest('.workout'); // 'closest' allows to move up chain to closest parent
+    console.log(workoutEl); // closest takes care of selecting the entire element, gain access to ID - This ID will be used to find the workout array - ables to build a bridge between UI and data in application
+    if (!workoutEl) return;
+
+    const workout = this.#workouts.find(
+      work => work.id === workoutEl.dataset.id
+    );
+    console.log(workout);
   }
 }
 
