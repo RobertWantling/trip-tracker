@@ -6,8 +6,8 @@ class Workout {
   date = new Date();
   // Object should have unique identifier so later access using that ID
   //id = (Date.now() + '').slice(-10); // not pracitcal for real world - as might have numerous users on creating obj at same time so wont work as unique ID
-  // random id from cdn library
-  id = uuid.v4();
+  id = uuid.v4(); // random id from cdn library
+  clicks = 0;
 
   constructor(coords, distance, duration, grade) {
     this.coords = coords; // equal to coordinates get as an input etc. [lat, lng]
@@ -38,6 +38,11 @@ class Workout {
     this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${
       months[this.date.getMonth()]
     } ${this.date.getDay()}`;
+  }
+
+  // Shows can interact with each of the objects using PI
+  click() {
+    this.clicks++;
   }
 }
 
@@ -113,10 +118,10 @@ class Climbing extends Workout {
 }
 
 // test
-const run1 = new Running([39, -12], 5.2, 24, 178);
-const cycling1 = new Cycling([39, -12], 27, 95, 523);
-const walking1 = new Walking([39, -12], 10, 30, 123);
-console.log(run1, cycling1, walking1);
+// const run1 = new Running([39, -12], 5.2, 24, 178);
+// const cycling1 = new Cycling([39, -12], 27, 95, 523);
+// const walking1 = new Walking([39, -12], 10, 30, 123);
+// console.log(run1, cycling1, walking1);
 
 ////////////////////////////////////////////////////////////////////////////
 // solve scope by creating global varibale and then reassign it later
@@ -138,6 +143,7 @@ class App {
   #map;
   #mapEvent; // now properties that are gonna be present on all instances created through this class
   #workouts = [];
+  #mapoomLevel = 13;
 
   ////////////////////////////////////////////////////////////////////////////
 
@@ -182,7 +188,7 @@ class App {
     const coords = [latitude, longitude];
     // whatever string passed into 'map' function must be ID name of element in HTML - it is in   that element where the map is displayed
     console.log(this);
-    this.#map = L.map('map').setView(coords, 13);
+    this.#map = L.map('map').setView(coords, this.#mapoomLevel);
     // customised leaflet map
     // L.tileLayer(
     // 'https://{s}.tile.openstreetmap.tiles/outdoors/{z}/{x}/{y}.png',
@@ -383,13 +389,22 @@ class App {
           autoClose: false,
           closeOnClick: false,
           className: `${workout.type}-popup`,
+          draggable: true,
           // all methods for leaflet marker are chainable with 'this'
         })
       )
       .setPopupContent(
         `${workout.type === 'running' ? '🏃‍♂️' : '🚴🏻'} ${workout.description}`
       )
-      .openPopup();
+      .openPopup()
+      .on('click', function (eClick) {
+        const selectReqId = workout.id;
+        const formWrkOut = document.querySelector(`[data-id="${selectReqId}"]`);
+        formWrkOut.style.backgroundColor = '#2F5D62';
+        setTimeout(function () {
+          formWrkOut.style.backgroundColor = '#42484d';
+        }, 2000);
+      });
   }
 
   // RENDER WORKOUT /////////////////////////////////////////////////////////////////////
@@ -457,6 +472,19 @@ class App {
       work => work.id === workoutEl.dataset.id
     );
     console.log(workout);
+
+    // take coords from wokrout el and move map to that position - use leaflet method avail on all map objects - setview() sets view of map with given coords + animation options
+
+    this.#map.setView(workout.coords, this.#mapoomLevel, {
+      // pass in an object of options
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
+
+    // using the public interface
+    workout.click();
   }
 }
 
