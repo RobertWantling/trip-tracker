@@ -249,6 +249,12 @@ class App {
 
   _highlightWorkout() {}
 
+  _iconSelect(workout) {
+    if (workout.type === 'running') {
+      ('🏃🏻‍♂️');
+    }
+  }
+
   // TOGGLE INPUT FIELDS //////////////////////////////////////////////////////////////////////////
 
   _toggleElevationField(e) {
@@ -390,6 +396,8 @@ class App {
     this._setLocalStorage();
 
     this._highlightWorkout();
+
+    this._iconSelect(workout);
   }
 
   // RENDER WORKOUT MARKER /////////////////////////////////////////////////////////////////////
@@ -415,7 +423,8 @@ class App {
         })
       )
       .setPopupContent(
-        `${workout.type === 'running' ? '🏃‍♂️' : '🚴🏻'} ${workout.description}`
+        // this._iconSelect
+        `${workout.type === 'running' '🏃‍♂️' } ${workout.description}`
       )
       .openPopup()
       .on('click', function (eClick) {
@@ -435,23 +444,21 @@ class App {
     // data-id - used as custom data attribute, use data properties like this to build a bridge between UI and data that have on application
     let html = ` 
    <li class="workout workout--${workout.type}" data-id="${workout.id}">
-   <h2 class="workout__title">${workout.description}</h2>
-   <div class="workout__details">
-     <span class="workout__icon">${
-       workout.type === 'running' ? '🏃‍♂️' : '🚴🏻'
-     }</span>
-     <span class="workout__value">${workout.distance}</span>
-     <span class="workout__unit">km</span>
-   </div>
-   <div class="workout__details">
-     <span class="workout__icon">⏱</span>
-     <span class="workout__value">${workout.duration}</span>
-     <span class="workout__unit">min</span>
-   </div> `;
+   <h2 class="workout__title">${workout.description}</h2>`;
 
     if (workout.type === 'running')
       html += `
-  <div class="workout__details">
+    <div class="workout__details">
+      <span class="workout__icon">🏃‍♂️</span>
+      <span class="workout__value">${workout.distance}</span>
+      <span class="workout__unit">km</span>
+    </div>
+    <div class="workout__details">
+      <span class="workout__icon">⏱</span>
+      <span class="workout__value">${workout.duration}</span>
+      <span class="workout__unit">min</span>
+    </div> 
+  <div class="workout__details"> 
     <span class="workout__icon">⚡️</span>
     <span class="workout__value">${workout.pace.toFixed(1)}</span>
     <span class="workout__unit">min/km</span>
@@ -466,6 +473,16 @@ class App {
 
     if (workout.type === 'cycling')
       html += `
+  <div class="workout__details">
+    <span class="workout__icon">🚴‍♀️</span>
+    <span class="workout__value">27</span>
+    <span class="workout__unit">km</span>
+  </div>
+  <div class="workout__details">
+  <span class="workout__icon">⏱</span>
+  <span class="workout__value">${workout.duration}</span>
+  <span class="workout__unit">min</span>
+</div>
   <div class="workout__details">
       <span class="workout__icon">⚡️</span>
       <span class="workout__value">${workout.speed.toFixed(1)}</span>
@@ -485,6 +502,11 @@ class App {
     <span class="workout__unit">km</span>
   </div>
   <div class="workout__details">
+  <span class="workout__icon">⏱</span>
+  <span class="workout__value">${workout.duration}</span>
+  <span class="workout__unit">min</span>
+</div>
+  <div class="workout__details">
     <span class="workout__icon">⚡️</span>
     <span class="workout__value">16</span>
     <span class="workout__unit">km/h</span>
@@ -495,6 +517,50 @@ class App {
     <span class="workout__unit">m</span>
   </div>
 </li> `;
+    if (workout.type === 'walking')
+      html += `
+     <div class="workout__details">
+   <span class="workout__icon">🚶🏻‍♂️</span>
+   <span class="workout__value">27</span>
+   <span class="workout__unit">km</span>
+ </div>
+ <div class="workout__details">
+   <span class="workout__icon">⏱</span>
+   <span class="workout__value">${workout.duration}</span>
+   <span class="workout__unit">min</span>
+ </div>
+ <div class="workout__details">
+   <span class="workout__icon">⚡️</span>
+   <span class="workout__value">${workout.pace.toFixed(1)}</span>
+   <span class="workout__unit">km/h</span>
+ </div>
+ <div class="workout__details">
+   <span class="workout__icon">🦶🏼</span>
+   <span class="workout__value">${workout.cadence}</span>
+   <span class="workout__unit">spm</span>
+ </div>`;
+    if (workout.type === 'climbing')
+      html += `
+    <div class="workout__details">
+  <span class="workout__icon">🧗🏻‍♂️</span>
+  <span class="workout__value">27</span>
+  <span class="workout__unit">km</span>
+</div>
+<div class="workout__details">
+  <span class="workout__icon">⏱</span>
+  <span class="workout__value">${workout.duration}</span>
+  <span class="workout__unit">min</span>
+</div>
+<div class="workout__details">
+  <span class="workout__icon">⚡️</span>
+  <span class="workout__value">16</span>
+  <span class="workout__unit">km/h</span>
+</div>
+<div class="workout__details">
+  <span class="workout__icon">📈</span>
+  <span class="workout__value">v3</span>
+  <span class="workout__unit">grade</span>
+</div>`;
 
     // Insert form as a sibling element - This one will add the new element as a sibling el at end of the form
     form.insertAdjacentHTML('afterend', html);
