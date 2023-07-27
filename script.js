@@ -247,16 +247,7 @@ class App {
     setTimeout(() => (form.style.display = 'grid'), 1000);
   }
 
-  _highlightWorkout() {
-    this.workoutEl.on('click', function (eClick) {
-      const selectReqId = workout.id;
-      const formWrkOut = document.querySelector(`[data-id="${selectReqId}"]`);
-      formWrkOut.style.backgroundColor = '#2F5D62';
-      setTimeout(function () {
-        formWrkOut.style.backgroundColor = '#42484d';
-      }, 2000);
-    });
-  }
+  _highlightWorkout() {}
 
   // TOGGLE INPUT FIELDS //////////////////////////////////////////////////////////////////////////
 
@@ -486,6 +477,24 @@ class App {
     <span class="workout__unit">metres</span>
   </div>
   </li> `;
+    if (workout.type === 'hiking')
+      html += `
+  <div class="workout__details">
+    <span class="workout__icon">🏞</span>
+    <span class="workout__value">27</span>
+    <span class="workout__unit">km</span>
+  </div>
+  <div class="workout__details">
+    <span class="workout__icon">⚡️</span>
+    <span class="workout__value">16</span>
+    <span class="workout__unit">km/h</span>
+  </div>
+  <div class="workout__details">
+    <span class="workout__icon">⛰</span>
+    <span class="workout__value">223</span>
+    <span class="workout__unit">m</span>
+  </div>
+</li> `;
 
     // Insert form as a sibling element - This one will add the new element as a sibling el at end of the form
     form.insertAdjacentHTML('afterend', html);
@@ -503,22 +512,13 @@ class App {
     );
     // take coords from wokrout el and move map to that position - use leaflet method avail on all map objects - setview() sets view of map with given coords + animation options
 
-    this.#map
-      .setView(workout.coords, this.#mapZoomLevel, {
-        // pass in an object of options
-        animate: true,
-        pan: {
-          duration: 1,
-        },
-      })
-      .on('click', function (eClick) {
-        const selectReqId = workout.id;
-        const formWrkOut = document.querySelector(`[data-id="${selectReqId}"]`);
-        formWrkOut.style.backgroundColor = '#2F5D62';
-        setTimeout(function () {
-          formWrkOut.style.backgroundColor = '#42484d';
-        }, 2000);
-      });
+    this.#map.setView(workout.coords, this.#mapZoomLevel, {
+      // pass in an object of options
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
 
     // using the public interface
     // workout.click();
