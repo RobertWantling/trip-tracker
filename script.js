@@ -251,7 +251,9 @@ class App {
 
   _iconSelect(workout) {
     if (workout.type === 'running') {
-      ('🏃🏻‍♂️');
+      return '🏃🏻‍♂️';
+    } else if (workout.type === 'cycling') {
+      return '🚴🏻‍♂️';
     }
   }
 
@@ -421,11 +423,8 @@ class App {
           draggable: true,
           // all methods for leaflet marker are chainable with 'this'
         })
-      )
-      .setPopupContent(
-        // this._iconSelect
-        `${workout.type === 'running' ? '🏃‍♂️' : 'f'} ${workout.description}`
-      )
+      ).setPopupContent// this._iconSelect
+    `${workout.type === 'running' ? '🏃‍♂️' : '🚴🏻‍♂️'} ${workout.description}`()
       .openPopup()
       .on('click', function (eClick) {
         const selectReqId = workout.id;
@@ -648,3 +647,19 @@ Architecture: Initial Approach
  change input 
  submit form 
 */
+
+///////////
+// console.log('test');
+// function splitAndMerge(string, separator) {
+// let words = string.split(' ');
+// let arr = [];
+// let res = [];
+// for (let i = 0; i < words.length; i++) {
+// arr.push(words[i].split('').join(separator));
+// }
+// res = arr.join(' ');
+// console.log(res);
+// }
+
+// splitAndMerge('My name is John', ' ');
+// splitAndMerge('My name is John', '-');

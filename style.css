@@ -5,8 +5,8 @@
   --color-brand--4: #7c00c4;
   --color-brand--5: #cd0000;
 
-  --color-dark--1: #2d3439;
-  --color-dark--2: #42484d;
+  --color-dark--1: #d8dcdf;
+  --color-dark--2: #a2adb4;
   --color-light--1: #aaa;
   --color-light--2: #ececec;
   --color-light--3: rgb(214, 222, 224);
@@ -31,10 +31,7 @@ body {
   height: 100vh;
   overscroll-behavior-y: none;
 
-  background-color: #fff;
-  background-image: url('test.jpeg');
-  background-repeat: repeat;
-  background-position: top;
+  background-color: #e8eaed;
   padding: 2.5rem;
   margin: 0;
   display: flex;
@@ -84,7 +81,7 @@ a:visited {
 }
 
 .workout {
-  background-color: var(--color-dark--2);
+  background-color: var(--color-light--1);
   border-radius: 5px;
   padding: 1.5rem 2.25rem;
   margin-bottom: 1.75rem;
@@ -137,7 +134,7 @@ a:visited {
 
 .workout__unit {
   font-size: 1.1rem;
-  color: var(--color-light--1);
+  color: var(--color-light--3);
   text-transform: uppercase;
   font-weight: 800;
 }
