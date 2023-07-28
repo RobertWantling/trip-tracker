@@ -424,7 +424,7 @@ class App {
       )
       .setPopupContent(
         // this._iconSelect
-        `${workout.type === 'running' '🏃‍♂️' } ${workout.description}`
+        `${workout.type === 'running' ? '🏃‍♂️' : 'f'} ${workout.description}`
       )
       .openPopup()
       .on('click', function (eClick) {
