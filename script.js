@@ -423,8 +423,11 @@ class App {
           draggable: true,
           // all methods for leaflet marker are chainable with 'this'
         })
-      ).setPopupContent// this._iconSelect
-    `${workout.type === 'running' ? '🏃‍♂️' : '🚴🏻‍♂️'} ${workout.description}`()
+      )
+      .setPopupContent(
+        // this._iconSelect
+        `${workout.type === 'running' ? '🏃‍♂️' : '🚴🏻‍♂️'} ${workout.description}`
+      )
       .openPopup()
       .on('click', function (eClick) {
         const selectReqId = workout.id;
@@ -438,12 +441,14 @@ class App {
 
   // RENDER WORKOUT /////////////////////////////////////////////////////////////////////
 
-  _renderWorkout(workout) {
+  _renderWorkout(workout, adding = true, editing = false) {
     // create markup HTML that can insert into the DOM wherever there is a new workout
     // data-id - used as custom data attribute, use data properties like this to build a bridge between UI and data that have on application
     let html = ` 
    <li class="workout workout--${workout.type}" data-id="${workout.id}">
-   <h2 class="workout__title">${workout.description}</h2>`;
+   <span class="close">...</span>
+   <h2 class="workout__title">${workout.description}</h2>
+   `;
 
     if (workout.type === 'running')
       html += `
