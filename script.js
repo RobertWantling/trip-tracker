@@ -432,10 +432,10 @@ class App {
       .on('click', function (eClick) {
         const selectReqId = workout.id;
         const formWrkOut = document.querySelector(`[data-id="${selectReqId}"]`);
-        formWrkOut.style.backgroundColor = '#2F5D62';
+        formWrkOut.style.backgroundColor = '#ececec';
         setTimeout(function () {
-          formWrkOut.style.backgroundColor = '#42484d';
-        }, 2000);
+          formWrkOut.style.backgroundColor = '#c3c1c1';
+        }, 500);
       });
   }
 

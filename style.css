@@ -5,8 +5,8 @@
   --color-brand--4: #7c00c4;
   --color-brand--5: #cd0000;
 
-  --color-dark--1: #6e6e6e;
-  --color-dark--2: #baff39;
+  --color-dark--1: #797979;
+  --color-dark--2: #96d71e;
   --color-light--1: #c3c1c1;
   --color-light--2: #ececec;
   --color-light--3: rgb(214, 222, 224);
@@ -31,7 +31,7 @@ body {
   height: 100vh;
   overscroll-behavior-y: none;
 
-  background-color: #e8eaed;
+  background-color: #b7b7b7;
   padding: 2.5rem;
   margin: 0;
   display: flex;
@@ -65,9 +65,9 @@ a:visited {
 }
 
 .logo {
-  height: 5.2rem;
+  height: 6.2rem;
   align-self: center;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .workouts {
