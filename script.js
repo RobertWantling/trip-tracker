@@ -445,8 +445,12 @@ class App {
     // create markup HTML that can insert into the DOM wherever there is a new workout
     // data-id - used as custom data attribute, use data properties like this to build a bridge between UI and data that have on application
     let html = ` 
+    <div class="workout__menu">
+    <svg class="workout__menu-trigger workout__menu-icons">
+    <use xlink:href="img/sprite.svg#icon-dots-three-horizontal"></use>
+    </svg>
+    </div>
    <li class="workout workout--${workout.type}" data-id="${workout.id}">
-   <span class="close">...</span>
    <h2 class="workout__title">${workout.description}</h2>
    `;
 
