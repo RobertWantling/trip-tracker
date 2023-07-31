@@ -140,6 +140,9 @@ const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 const inputGrade = document.querySelector('.form__input--grade');
 
+// Edit-workout form
+// const formEdit =
+
 class App {
   // private instance properties (want everything in the APP class - so define the map and mapevent as properties of the app object - use private class field with hash)
   #map;
@@ -229,7 +232,7 @@ class App {
           autoClose: false,
           className: 'inital--popup',
         }).setContent(
-          `This is yout <strong>current position</strong>.<br> Click on the map to add a workout`
+          `This is your <strong>current position</strong>.<br> Click on the map to add a workout.`
         )
       )
       .openPopup();
@@ -251,14 +254,13 @@ class App {
 
   // RENDER POPUP ///////////////////////////////////////////////////////////////////////
   _renderPopup(mapE) {
-    if (
-      formEdit.classList.contains('active') ||
-      !deleteContainer.classList.contains('delete-confirmation--hidden')
-    )
-      return;
+    // if (
+    // formEdit.classList.contains('active') ||
+    // !deleteContainer.classList.contains('delete-confirmation--hidden')
+    // )
+    // return;
 
     this.#mapEvent = mapE;
-    console.log(this.#mapEvent);
 
     const { lat, lng } = mapE.latlng;
 
