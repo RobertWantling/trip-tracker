@@ -314,3 +314,26 @@ a:visited {
 .workout__menu-options .workout__menu-options--hidden {
   display: none;
 }
+
+.workout__menu-option:link,
+.workout__menu-option:visited {
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--color-dark--2);
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.workout__menu-option:hover,
+.workout__menu-option:active {
+  color: var(--color-light--1);
+}
+
+.workout__menu-option .workout__menu-icons {
+  fill: var(--color-dark--2);
+  vertical-align: sub;
+}
+
+.workout__menu-option:hover .workout__menu-icons {
+  fill: var(--color-light--1);
+}

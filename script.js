@@ -490,13 +490,38 @@ class App {
     // create markup HTML that can insert into the DOM wherever there is a new workout
     // data-id - used as custom data attribute, use data properties like this to build a bridge between UI and data that have on application
     let html = ` 
-    <div class="workout__menu">
-    <svg class="workout__menu-trigger workout__menu-icons">
-    <use xlink:href="img/sprite.svg#icon-dots-three-horizontal"></use>
-    </svg>
-    </div>
+
    <li class="workout workout--${workout.type}" data-id="${workout.id}">
    <h2 class="workout__title">${workout.description}</h2>
+    <div class="workout__menu">
+      <svg class="workout__menu-trigger workout__menu-icons">
+        <use xlink:href="svg-icons/sprite.svg#dots-three-horizontal"></use>
+      </svg>
+    <ul class="workout__menu-options workout__menu-options--hidden">
+          <li>
+            <a
+              class="workout__menu-option workout__menu-option--edit"
+              href="#"
+            >
+              <svg class="workout__menu-icons">
+                <use xlink:href="img/sprite.svg#icon-new-message"></use>
+              </svg>
+              Edit Workout
+            </a>
+          </li>
+          <li>
+            <a
+              class="workout__menu-option workout__menu-option--delete"
+              href="#"
+            >
+              <svg class="workout__menu-icons">
+                <use xlink:href="img/sprite.svg#icon-cross"></use>
+              </svg>
+              Delete Workout
+            </a>
+          </li>
+        </ul>
+    </div>
    `;
 
     if (workout.type === 'running')
@@ -617,6 +642,19 @@ class App {
 
     // Insert form as a sibling element - This one will add the new element as a sibling el at end of the form
     form.insertAdjacentHTML('afterend', html);
+  }
+
+  // HANDLE CLICK /////////////////////////////////////////////////////////////////////
+  _handleClick(e) {
+    this._closeAllMenus();
+
+    if (
+      (!e.target.closest('.workout__menu') &&
+        !e.target.cloest('.menu__option')) ||
+      formEdit.classList.contains('active') ||
+      !deleteContainer.classList.contains
+    )
+      'delete-confirmation--hidden';
   }
 
   // MOVE TO CLICKED WORKOUT /////////////////////////////////////////////////////////////////////
