@@ -216,15 +216,16 @@ class App {
     // Marker for current location render marker and popup
     const myIcon = L.icon({
       iconUrl: 'marker.png',
-      iconSize: [15, 33],
+      iconSize: [30, 30],
       iconAnchor: [8, 8],
+      className: 'marker',
     });
 
     const marker = L.marker([lat, lng], { icon: myIcon }).addTo(this.#map);
     marker
       .bindPopup(
         L.popup({
-          minWidth: 240,
+          minWidth: 220,
           autoClose: false,
           className: 'inital--popup',
         }).setContent(
