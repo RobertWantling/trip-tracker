@@ -37,16 +37,20 @@ class Workout {
       'December',
     ];
 
-    this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${
-      months[this.date.getMonth()]
-    } ${this.date.getDay()}`;
-  }
-
-  // Shows can interact with each of the objects using PI
-  click() {
-    this.clicks++;
+    this.description = `${
+      this.type[0].toUpperCase() + this.type.slice(1)
+    } on ${new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(
+      this.date.getDay()
+    )}${this.date.getMonth()}`;
   }
 }
+
+// months[this.date.getMonth()]
+// ${this.date.getDay()}`;
+// Shows can interact with each of the objects using PI
+// click() {
+// this.clicks++;
+// }
 
 // child classes
 class Running extends Workout {
@@ -495,7 +499,7 @@ class App {
    <h2 class="workout__title">${workout.description}</h2>
     <div class="workout__menu">
       <svg class="workout__menu-trigger workout__menu-icons">
-        <use xlink:href="svg-icons/sprite.svg#dots-three-horizontal"></use>
+        <img src="svg-icons/navigation-more.svg"></img>
       </svg>
     <ul class="workout__menu-options workout__menu-options--hidden">
           <li>
@@ -504,7 +508,7 @@ class App {
               href="#"
             >
               <svg class="workout__menu-icons">
-                <use xlink:href="img/sprite.svg#icon-new-message"></use>
+                <img src="svg-icons/sprite.svg"></img>
               </svg>
               Edit Workout
             </a>
@@ -755,3 +759,6 @@ Architecture: Initial Approach
 
 // splitAndMerge('My name is John', ' ');
 // splitAndMerge('My name is John', '-');
+
+let x = 0 / 0;
+console.log(x);
