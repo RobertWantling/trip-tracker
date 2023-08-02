@@ -37,11 +37,9 @@ class Workout {
       'December',
     ];
 
-    this.description = `${
-      this.type[0].toUpperCase() + this.type.slice(1)
-    } on ${new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(
-      this.date.getDay()
-    )}${this.date.getMonth()}`;
+    this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${
+      months[this.date.getMonth()]
+    } ${this.date.getDate()}`;
   }
 }
 
