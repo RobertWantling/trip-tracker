@@ -127,6 +127,28 @@ class Climbing extends Workout {
 // const walking1 = new Walking([39, -12], 10, 30, 123);
 // console.log(run1, cycling1, walking1);
 
+class ComplexDrawing {
+  constructor(center) {
+    this._center = center;
+  }
+  set _center(center) {
+    const { lat, lng } = center;
+    this.center = [lat, lng];
+  }
+  get _center() {
+    return this.center;
+  }
+}
+
+class DrawLine extends ComplexDrawing {
+  name = 'DrawLine';
+  constructor(latlng, color, center) {
+    super(center);
+    this.latlng = latlng.flat(); // [lat, lng, lat, lng]
+    this.color = color; // color code
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // solve scope by creating global varibale and then reassign it later
 // let map, mapEvent;
