@@ -149,6 +149,17 @@ class DrawLine extends ComplexDrawing {
   }
 }
 
+class DrawMarker {
+  name = 'DrawMarker';
+  constructor(latlng) {
+    this.latlng = latlng; // [lat, lng]
+    this._setCenter();
+  }
+  _setCenter() {
+    this.center = this.latlng;
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // solve scope by creating global varibale and then reassign it later
 // let map, mapEvent;
