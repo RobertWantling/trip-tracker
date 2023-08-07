@@ -277,10 +277,13 @@ class App {
     this.#map.addLayer(drawnItems);
     const drawControl = new L.Control.Draw({
       draw: {
-        polygone: false,
+        polygon: false,
+        polyline: true,
+        circle: false,
+        marker: true,
       },
       edit: {
-        FeatureGroup: drawnItems,
+        featureGroup: drawnItems,
         edit: false,
         remove: false,
       },
@@ -288,9 +291,13 @@ class App {
     this.#map.addControl(drawControl);
 
     this.#map.on('click', this._renderPopup.bind(this));
+
     // Handling clicks on map
     this.#map.on('click', this._showForm.bind(this));
     // 'this' keyword points to map b that is where the event handler points to - so need to use bind again to override the location to the APP object
+
+    // Handling maps drawing
+    this.#map.on('draw:created', this._showForm.bind(this));
 
     // Loading workouts lists and markers from local storage - use leaflets method 'whenReady' call getLocal only when map is loaded
     this.#map.whenReady(this._getLocalStorage.bind(this));
