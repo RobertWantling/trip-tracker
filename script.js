@@ -9,13 +9,14 @@ class Workout {
   id = uuid.v4(); // random id from cdn library
   clicks = 0;
 
-  constructor(coords, distance, duration, grade, city, country) {
+  constructor(mapWorkoutObj, coords, distance, duration, grade, city, country) {
     this.coords = coords; // equal to coordinates get as an input etc. [lat, lng]
     this.distance = distance; // in miles
     this.duration = duration; // in mins
     this.grade = grade; // v
     this.city = city;
     this.country = country;
+    this.mapWorkoutObj = mapWorkoutObj; // obj of icon on map
   }
 
   // SET DESCRIPTION /////////////////////////////////////////////////////////////////////
@@ -54,9 +55,9 @@ class Workout {
 class Running extends Workout {
   type = 'running';
 
-  constructor(coords, distance, duration, cadence) {
+  constructor(mapWorkoutObj, coords, distance, duration, cadence) {
     // takes same data as parent class + props (cadence)
-    super(coords, distance, duration);
+    super(mapWorkoutObj, coords, distance, duration);
     this.cadence = cadence;
     this.calcPace(); // bien call any code in constructor
     this._setDescription(); // work due to scope train, the instructor will have access to all methods of the parent class (setDescription)
@@ -72,8 +73,8 @@ class Running extends Workout {
 class Cycling extends Workout {
   // defining field - will now be available on all instances - same as this.type = 'cycling
   type = 'cycling';
-  constructor(coords, distance, duration, elevationGain) {
-    super(coords, distance, duration);
+  constructor(mapWorkoutObj, coords, distance, duration, elevationGain) {
+    super(mapWorkoutObj, coords, distance, duration);
     this.elevationGain = elevationGain;
     this.calcSpeed();
     this._setDescription();
@@ -89,8 +90,8 @@ class Cycling extends Workout {
 
 class Hiking extends Workout {
   type = 'hiking';
-  constructor(coords, distance, duration, elevationGain) {
-    super(coords, distance, duration);
+  constructor(mapWorkoutObj, coords, distance, duration, elevationGain) {
+    super(mapWorkoutObj, coords, distance, duration);
     this.elevationGain = elevationGain;
     this._setDescription();
   }
@@ -98,8 +99,8 @@ class Hiking extends Workout {
 
 class Walking extends Workout {
   type = 'walking';
-  constructor(coords, distance, duration, cadence) {
-    super(coords, distance, duration);
+  constructor(mapWorkoutObj, coords, distance, duration, cadence) {
+    super(mapWorkoutObj, coords, distance, duration);
     this.cadence = cadence;
     this.calcPace();
     this._setDescription();
@@ -114,8 +115,8 @@ class Walking extends Workout {
 
 class Climbing extends Workout {
   type = 'climbing';
-  constructor(coords, distance, duration, grade) {
-    super(coords, distance, duration);
+  constructor(mapWorkoutObj, coords, distance, duration, grade) {
+    super(mapWorkoutObj, coords, distance, duration);
     this.grade = grade;
     this._setDescription();
   }
@@ -217,7 +218,9 @@ class App {
         this._loadMap.bind(this), // this is treated as a regular function call not a method call - not calling it - calls as regaulr function call so 'this' is set to underfined - manually bind 'this' to loadMap
         function () {
           // first callback function need to call loadmap now as in a class can use 'this' - call this callback function here and pass in position argument as soon as current position of user is determined
-          alert('Could not get your current position');
+          alert(
+            'Could not get your current position. Please check your connection.'
+          );
         }
       );
     else alert('Your Browser does not support geolocation');
@@ -393,6 +396,21 @@ class App {
     }
   }
 
+  // DEAL MAP PROPERTIES /////////////////////////////////////////////////////////////////////
+  // (need to return formatted obj)
+  _mapEventProps() {
+    if (this.#mapEvent.type === 'polyline') {
+      const latlngsArr = this.#mapEvent.layer.getLatLngs();
+      const color = this.#mapEvent.layer.options.color;
+      const center = this.#mapEvent.layer.getBounds().getCenter();
+      return new DrawLine(latlngsArr, color, center);
+    }
+    if (this.#mapEvent.type === 'click') {
+      const { lat, lng } = this.#mapEvent.latlng;
+      return new DrawMarker([lat, lng]);
+    }
+  }
+
   // NEW WORKOUT /////////////////////////////////////////////////////////////////////
 
   _newWorkout(e) {
@@ -409,7 +427,8 @@ class App {
     const distance = +inputDistance.value; // '+' Unary Operator turn to num
     const duration = +inputDuration.value;
     const grade = +inputGrade.value;
-    const { lat, lng } = this.#mapEvent.latlng;
+    // const { lat, lng } = this.#mapEvent.latlng;
+    const workoutMapProps = this._mapEventProps();
     let workout;
 
     // Check if data is valid
@@ -430,7 +449,7 @@ class App {
       )
         return alert('Inputs have to be positive numbers!'); // if distance is NAN return asap
 
-      workout = new Running([lat, lng], distance, duration, cadence); // redefine workout so able to access out of scope
+      workout = new Running(workoutMapProps, distance, duration, cadence); // redefine workout so able to access out of scope
     }
 
     // If workout cycling, create cycling object
@@ -443,7 +462,7 @@ class App {
       )
         return alert('Inputs have to be positive numbers!');
 
-      workout = new Cycling([lat, lng], distance, duration, elevation);
+      workout = new Cycling(workoutMapProps, distance, duration, elevation);
     }
 
     // If workout hiking, create hiking object
@@ -455,7 +474,7 @@ class App {
       )
         return alert('Inputs have to be positive numbers!');
 
-      workout = new Hiking([lat, lng], distance, duration, elevation);
+      workout = new Hiking(workoutMapProps, distance, duration, elevation);
     }
 
     // If workout walking, create walking object
@@ -467,7 +486,7 @@ class App {
       )
         return alert('Inputs have to be positive numbers!');
 
-      workout = new Walking([lat, lng], distance, duration, cadence);
+      workout = new Walking(workoutMapProps, distance, duration, cadence);
     }
 
     // If workout climbing, create climbing object
@@ -479,7 +498,7 @@ class App {
       )
         return alert('Inputs have to be positive numbers!');
 
-      workout = new Climbing([lat, lng], distance, duration, grade);
+      workout = new Climbing(workoutMapProps, distance, duration, grade);
     }
 
     ////////////////// Good habit to export functionality into thier own methods or own functions
@@ -507,6 +526,18 @@ class App {
   // RENDER WORKOUT MARKER /////////////////////////////////////////////////////////////////////
 
   _renderWorkoutMarker(workout) {
+    let mapIcon;
+
+    if (workout.mapWorkoutObj) {
+      if (workout.mapWorkoutObj.name == 'DrawMarker') {
+        mapIcon = L.marker(workout.mapWorkoutObj.latlng);
+      }
+      if (workout.mapWorkoutObj.name == 'DrawLine') {
+        mapIcon = L.polyline(workout.mapWorkoutObj.latlng, {
+          color: workout.mapWorkoutObj.color,
+        });
+      }
+    }
     let myIcon = L.icon({
       iconUrl: 'marker.png',
       iconSize: [30, 30],
