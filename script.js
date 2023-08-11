@@ -274,6 +274,39 @@ class App {
         )
       )
       .openPopup();
+    
+    
+     _mapEventProps() {
+   // Need to return a formatted obj
+   if (this.#mapEvent.type === "click") {
+     const { lat, lng } = this.#mapEvent.latlng;
+     return new DrawMarker([lat, lng]);
+   }
+   if (this.#mapEvent.type === "draw:created") {
+     if (this.#mapEvent.layerType === "marker") {
+       const { lat, lng } = this.#mapEvent.layer._latlng;
+       return new DrawMarker([lat, lng]);
+     }
+     if (this.#mapEvent.layerType === "polyline") {
+       const latlngsArr = this.#mapEvent.layer.getLatLngs();
+       const color = this.#mapEvent.layer.options.color;
+       const center = this.#mapEvent.layer.getBounds().getCenter();
+       return new DrawLine(latlngsArr, color, center);
+     }
+     if (this.#mapEvent.layerType === "rectangle") {
+       const latlngs = this.#mapEvent.layer._latlngs;
+       const color = this.#mapEvent.layer.options.color;
+       const weight = this.#mapEvent.layer.options.weight;
+       const center = this.#mapEvent.layer.getBounds().getCenter();
+       return new DrawRectangle(latlngs, color, weight, center);
+     }
+     if (this.#mapEvent.layerType === "circle") {
+       const latlngs = this.#mapEvent.layer.getLatLng();
+       const radius = this.#mapEvent.layer.getRadius();
+       return new DrawCircle(latlngs, radius);
+     }
+   }
+ }
 
     // Init edit layers on map
     const drawnItems = new L.FeatureGroup();
