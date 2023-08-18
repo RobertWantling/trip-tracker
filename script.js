@@ -133,8 +133,8 @@ class ComplexDrawing {
     this._center = center;
   }
   set _center(center) {
-    const { lat, lng } = center;
-    this.center = [lat, lng];
+    const { latlng } = center;
+    this.center = [latlng];
   }
   get _center() {
     return this.center;
@@ -409,6 +409,12 @@ class App {
       const { lat, lng } = this.#mapEvent.latlng;
       return new DrawMarker([lat, lng]);
     }
+    if (this.#mapEvent.type === 'draw:created') {
+      if (this.#mapEvent.layerType === 'marker') {
+        const { lat, lng } = this.#mapEvent.layer._latlng;
+        return new DrawMarker([lat, lng]);
+      }
+    }
   }
 
   // NEW WORKOUT /////////////////////////////////////////////////////////////////////
@@ -543,7 +549,8 @@ class App {
       iconSize: [30, 30],
     });
     // adds marker to the map
-    L.marker(workout.coords, { icon: myIcon }) // important have data in actual workout object needed to tell leaflet where to display the marker
+    L.marker(workout.coords, { icon: myIcon }); // important have data in actual workout object needed to tell leaflet where to display the marker
+    mapIcon
       .addTo(this.#map) // trying access map when not in scope
       .bindPopup(
         L.popup({
@@ -559,7 +566,9 @@ class App {
       )
       .setPopupContent(
         // this._iconSelect
-        `${workout.type === 'running' ? '🏃‍♂️' : '🚴🏻‍♂️'} ${workout.description}`
+        if (workout.type === 'running') {
+            '🚴🏻‍♂️' , workout.description}`;
+        } 
       )
       .openPopup()
       .on('click', function (eClick) {
@@ -603,7 +612,7 @@ class App {
               href="#"
             >
               <svg class="workout__menu-icons">
-                <use xlink:href="img/sprite.svg#icon-cross"></use>
+                <img src="svg-icons/sprite.svg"></img>
               </svg>
               Delete Workout
             </a>
