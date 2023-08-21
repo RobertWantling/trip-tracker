@@ -347,13 +347,13 @@ class App {
       inputCadence.value =
       inputElevation.value =
       inputGrade.value =
-      '';
+        '';
     form.style.display = 'none';
     form.classList.add('hidden');
     setTimeout(() => (form.style.display = 'grid'), 1000);
   }
 
-  _highlightWorkout() { }
+  _highlightWorkout() {}
 
   _iconSelect(workout) {
     if (workout.type === 'running') {
@@ -553,57 +553,60 @@ class App {
     // adds marker to the map
     // important have data in actual workout object needed to tell leaflet where to display the marker
     const marker = L.marker(workout.coords, { icon: myIcon }).addTo(this.#map); // trying access map when not in scope
-      const popup = L.popup({
-          // leaflet api reference
-          maxWidth: 250,
-          minWidth: 100,
-          autoClose: false,
-          closeOnClick: false,
-          className: `${workout.type}-popup`,
-          draggable: true,
-          // all methods for leaflet marker are chainable with 'this'
-        }
-      ).setPopupContent(e) {
-      // this._iconSelect
-      if (workout.type === 'running') {
-        `${"🏃‍♂️"} ${workout.description}`;
-      } else if (workout.type === 'cycling') {
-        `${"🚴‍♀️"} ${workout.description}`;
-      } else if (workout.type === 'hiking') {
-        `${"🏞"} ${workout.description}`;
-      } else if (workout.type === 'walking') {
-        `${"🚶🏻‍♂️"} ${workout.description}`;
-      } else {
-        `${"🧗🏻‍♂️"} ${workout.description}`;
-      }
-    
+    const popup = L.popup({
+      // leaflet api reference
+      maxWidth: 250,
+      minWidth: 100,
+      autoClose: false,
+      closeOnClick: false,
+      className: `${workout.type}-popup`,
+      draggable: true,
+      // all methods for leaflet marker are chainable with 'this'
+    }).setPopupContent(
+      `${workout.type === 'running' ? '🏃‍♀️' : '🚴‍♂️'} ${workout.description}`
+    );
+    // {
+    // this._iconSelect
+    // if (workout.type === 'running') {
+    // `${"🏃‍♂️"} ${workout.description}`;
+    // } else if (workout.type === 'cycling') {
+    // `${"🚴‍♀️"} ${workout.description}`;
+    // } else if (workout.type === 'hiking') {
+    // `${"🏞"} ${workout.description}`;
+    // } else if (workout.type === 'walking') {
+    // `${"🚶🏻‍♂️"} ${workout.description}`;
+    // } else {
+    // `${"🧗🏻‍♂️"} ${workout.description}`;
+    // }
+
     marker.bindPopup(popup).openPopup();
 
-    if (newMarker) this.#workoutMarkers.push(marker)
-      
+    if (newMarker) this.#workoutMarkers.push(marker);
+
     if (editMarker) {
       const markerIndex = this.#workoutMarkers.findIndex(marker => {
-        return (marker._latlng.lat === workout.coords[0] && marker._latlng.lng === workout.coords[1])
-      })
+        return (
+          marker._latlng.lat === workout.coords[0] &&
+          marker._latlng.lng === workout.coords[1]
+        );
+      });
 
       // Deleting the old marker from UI (From map)
-      this.#map.removeLayer(this.#workoutMarkers[markerIndex])
+      this.#map.removeLayer(this.#workoutMarkers[markerIndex]);
 
-      // 
+      // Replacing the old marker witht he new one in the workoutMarkers array
+      this.#workoutMarkers.splice(markerIndex, 1, marker);
+      console.log(this.#workoutMarkers);
     }
-     
-      
-   
   }
-      // .on('click', function (eClick) {
-        // const selectReqId = workout.id;
-        // const formWrkOut = document.querySelector(`[data-id="${selectReqId}"]`);
-        // formWrkOut.style.backgroundColor = '#ececec';
-        // setTimeout(function () {
-          // formWrkOut.style.backgroundColor = '#c3c1c1';
-        // }, 500);
-      // });
-  
+  // .on('click', function (eClick) {
+  // const selectReqId = workout.id;
+  // const formWrkOut = document.querySelector(`[data-id="${selectReqId}"]`);
+  // formWrkOut.style.backgroundColor = '#ececec';
+  // setTimeout(function () {
+  // formWrkOut.style.backgroundColor = '#c3c1c1';
+  // }, 500);
+  // });
 
   // RENDER WORKOUT /////////////////////////////////////////////////////////////////////
 
