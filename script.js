@@ -346,13 +346,13 @@ class App {
       inputCadence.value =
       inputElevation.value =
       inputGrade.value =
-        '';
+      '';
     form.style.display = 'none';
     form.classList.add('hidden');
     setTimeout(() => (form.style.display = 'grid'), 1000);
   }
 
-  _highlightWorkout() {}
+  _highlightWorkout() { }
 
   _iconSelect(workout) {
     if (workout.type === 'running') {
@@ -544,16 +544,15 @@ class App {
         });
       }
     }
-    let myIcon = L.icon({
+    const myIcon = L.icon({
       iconUrl: 'marker.png',
       iconSize: [30, 30],
+      iconAnchor: [10, 10],
     });
     // adds marker to the map
-    L.marker(workout.coords, { icon: myIcon }); // important have data in actual workout object needed to tell leaflet where to display the marker
-    mapIcon
-      .addTo(this.#map) // trying access map when not in scope
-      .bindPopup(
-        L.popup({
+    // important have data in actual workout object needed to tell leaflet where to display the marker
+    const marker = L.marker(workout.coords, { icon: myIcon }).addTo(this.#map); // trying access map when not in scope
+      const popup = L.popup({
           // leaflet api reference
           maxWidth: 250,
           minWidth: 100,
@@ -562,21 +561,22 @@ class App {
           className: `${workout.type}-popup`,
           draggable: true,
           // all methods for leaflet marker are chainable with 'this'
-        })
-      ).openPopup().setPopupContent() {
+        }
+      ).setPopupContent(e) {
       // this._iconSelect
       if (workout.type === 'running') {
-        `${"🏃‍♂️"} ${workout.description}`
+        `${"🏃‍♂️"} ${workout.description}`;
       } else if (workout.type === 'cycling') {
-        `${"🚴‍♀️"} ${workout.description}`
+        `${"🚴‍♀️"} ${workout.description}`;
       } else if (workout.type === 'hiking') {
-        `${"🏞"} ${workout.description}`
+        `${"🏞"} ${workout.description}`;
       } else if (workout.type === 'walking') {
-        `${"🚶🏻‍♂️"} ${workout.description}`
-      } else (workout.type === 'climbing') {
-        `${"🧗🏻‍♂️"} ${workout.description}`
+        `${"🚶🏻‍♂️"} ${workout.description}`;
+      } else {
+        `${"🧗🏻‍♂️"} ${workout.description}`;
       }
     }
+  }
       // .on('click', function (eClick) {
         // const selectReqId = workout.id;
         // const formWrkOut = document.querySelector(`[data-id="${selectReqId}"]`);
