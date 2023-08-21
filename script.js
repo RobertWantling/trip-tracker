@@ -563,23 +563,29 @@ class App {
           draggable: true,
           // all methods for leaflet marker are chainable with 'this'
         })
-      )
-      .setPopupContent(
-        // this._iconSelect
-        if (workout.type === 'running') {
-            '🚴🏻‍♂️' , workout.description}`;
-        } 
-      )
-      .openPopup()
-      .on('click', function (eClick) {
-        const selectReqId = workout.id;
-        const formWrkOut = document.querySelector(`[data-id="${selectReqId}"]`);
-        formWrkOut.style.backgroundColor = '#ececec';
-        setTimeout(function () {
-          formWrkOut.style.backgroundColor = '#c3c1c1';
-        }, 500);
-      });
-  }
+      ).openPopup().setPopupContent() {
+      // this._iconSelect
+      if (workout.type === 'running') {
+        `${"🏃‍♂️"} ${workout.description}`
+      } else if (workout.type === 'cycling') {
+        `${"🚴‍♀️"} ${workout.description}`
+      } else if (workout.type === 'hiking') {
+        `${"🏞"} ${workout.description}`
+      } else if (workout.type === 'walking') {
+        `${"🚶🏻‍♂️"} ${workout.description}`
+      } else (workout.type === 'climbing') {
+        `${"🧗🏻‍♂️"} ${workout.description}`
+      }
+    }
+      // .on('click', function (eClick) {
+        // const selectReqId = workout.id;
+        // const formWrkOut = document.querySelector(`[data-id="${selectReqId}"]`);
+        // formWrkOut.style.backgroundColor = '#ececec';
+        // setTimeout(function () {
+          // formWrkOut.style.backgroundColor = '#c3c1c1';
+        // }, 500);
+      // });
+  
 
   // RENDER WORKOUT /////////////////////////////////////////////////////////////////////
 
