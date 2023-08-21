@@ -186,6 +186,7 @@ class App {
   #workouts = [];
   #userCoords = [];
   #mapZoomLevel = 13;
+  #workoutMarkers = [];
 
   ////////////////////////////////////////////////////////////////////////////
 
@@ -575,7 +576,24 @@ class App {
       } else {
         `${"🧗🏻‍♂️"} ${workout.description}`;
       }
+    
+    marker.bindPopup(popup).openPopup();
+
+    if (newMarker) this.#workoutMarkers.push(marker)
+      
+    if (editMarker) {
+      const markerIndex = this.#workoutMarkers.findIndex(marker => {
+        return (marker._latlng.lat === workout.coords[0] && marker._latlng.lng === workout.coords[1])
+      })
+
+      // Deleting the old marker from UI (From map)
+      this.#map.removeLayer(this.#workoutMarkers[markerIndex])
+
+      // 
     }
+     
+      
+   
   }
       // .on('click', function (eClick) {
         // const selectReqId = workout.id;
