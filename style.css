@@ -79,6 +79,8 @@ a:visited {
   height: 77vh;
   overflow-y: scroll;
   overflow-x: hidden;
+  position: relative;
+  flex: 1;
 }
 
 .workouts::-webkit-scrollbar {
@@ -306,9 +308,10 @@ a:visited {
   fill: var(--color-light--1);
 }
 
-.workout__memu-icons {
+.workout__menu-icons {
   width: 2rem;
   height: 2rem;
+  transition: all 0.2s;
 }
 
 .workout__menu-options .workout__menu-options--hidden {
@@ -336,4 +339,9 @@ a:visited {
 
 .workout__menu-option:hover .workout__menu-icons {
   fill: var(--color-light--1);
+}
+
+/* Editing styles */
+.workout.editing {
+  transform: translate(100%);
 }

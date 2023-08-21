@@ -616,10 +616,15 @@ class App {
     let html = ` 
 
    <li class="workout workout--${workout.type}" data-id="${workout.id}">
+   <h4 class="workout__location">
+    <svg class="workout__location-icon">
+        <img src="svg-icons/location-pin.png"></img>
+    </svg>
+   </h4>
    <h2 class="workout__title">${workout.description}</h2>
     <div class="workout__menu">
       <svg class="workout__menu-trigger workout__menu-icons">
-        <img src="svg-icons/navigation-more.svg"></img>
+        <img src="svg-icons/navigation-more.svg" width="30px" height="30px"></img>
       </svg>
     <ul class="workout__menu-options workout__menu-options--hidden">
           <li>
