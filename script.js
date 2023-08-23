@@ -177,10 +177,20 @@ const inputElevation = document.querySelector('.form__input--elevation');
 const inputGrade = document.querySelector('.form__input--grade');
 
 // Edit workout form
-const formEdit = document.querySelector('.form-editing');
+const formEdit = document.querySelector('#form-editing');
+const workoutTypeEditForm = document.querySelector('#workout-type-e');
+const workoutDistanceEditForm = document.querySelector('#distance-e');
+const workoutDurationEditForm = document.querySelector('#duration-e');
+const workoutCadenceEditForm = document.querySelector('#cadence-e');
+const workoutElevationEditForm = document.querySelector('#elevation-e');
+const workoutDifficultyEditForm = document.querySelector('#difficulty-e');
+const saveChanges = document.querySelector('.form__btn--save');
+const cancelChanges = document.querySelector('.form__btn--cancel');
 
-// Edit-workout form
-// const formEdit =
+// Form errors
+const formError = document.querySelector('#form-control');
+const formEditError = document.querySelector('#form-editing-control');
+const dismissBtns = document.querySelectorAll('.form__btn--dismiss');
 
 class App {
   // private instance properties (want everything in the APP class - so define the map and mapevent as properties of the app object - use private class field with hash)
