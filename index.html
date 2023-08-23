@@ -74,6 +74,9 @@
               <label class="form__label">Distance</label>
               <input
                 class="form__input form__input--distance"
+                type="text"
+                name="distance"
+                id="distance"
                 placeholder="km"
               />
             </div>
@@ -81,6 +84,9 @@
               <label class="form__label">Duration</label>
               <input
                 class="form__input form__input--duration"
+                type="text"
+                name="duration"
+                id="duration"
                 placeholder="min"
               />
             </div>
@@ -88,6 +94,9 @@
               <label class="form__label">Cadence</label>
               <input
                 class="form__input form__input--cadence"
+                type="text"
+                name="cadence"
+                id="cadence"
                 placeholder="step/min"
               />
             </div>
@@ -95,6 +104,9 @@
               <label class="form__label">Elev Gain</label>
               <input
                 class="form__input form__input--elevation"
+                type="text"
+                name="elevation"
+                id="elevation"
                 placeholder="meters"
               />
             </div>
@@ -102,17 +114,30 @@
               <label class="form__label">Difficulty</label>
               <input
                 class="form__input form__input--grade"
+                type="text"
+                name="difficulty"
+                id="difficulty"
                 placeholder="v-grade"
               />
             </div>
-            <button class="form__btn">OK</button>
+            <input type="submit" value="OK" class="form__btn"></input>
+
+            <div class="form-control hidden" id="form-control">
+              <h4 class="form-control__title">All input fields must be positive numbers</h4>
+              <button type="submit" class="form__btn form__btn--save">
+                <svg class="form__btn--icon form__btn--icon--save">
+                  <use src="svg-icons/check.png"></use>
+                </svg>
+                Ok, got it
+              </button>
+            </div>
           </form>
-          <button type="submit" class="form__btn form__btn--save">
-            <svg class="form__btn--icon form__btn--icon--save">
-              <use xlink:href="svg-icons/sprite.svg#icon-check"></use>
-            </svg>
-            Save
-          </button>
+          
+          
+          
+          
+          
+          
 
           <!-- <li class="workout workout--running" data-id="1234567890">
           <h2 class="workout__title">Run on April 14</h2>
