@@ -126,19 +126,91 @@
               <h4 class="form-control__title">All input fields must be positive numbers</h4>
               <button type="submit" class="form__btn form__btn--save">
                 <svg class="form__btn--icon form__btn--icon--save">
-                  <use src="svg-icons/check.png"></use>
+                  <use src="svg-icons/tick.png"></use>
                 </svg>
                 Ok, got it
               </button>
             </div>
           </form>
-          
-          
-          
-          
-          
-          
 
+          <!-- Edit field -->
+            <div class="workouts">
+              <form class="form form-editing form-editing--hidden" id="form-editing">
+                <div class="form__group">
+                  <label for="workout-type-e" class="form__label">
+                    Type
+                  </label>
+                  <select name="workout-type-e" id="workout-type-e" class="form__input form__input--select">
+                    <option value="running">Running</option>
+                    <option value="cycling">Cycling</option>
+                    <option value="walking">Walking</option>
+                    <option value="hiking">Hiking</option>
+                    <option value="climbing">Climbing</option>
+                  </select>
+                </div>
+
+                <div class="form__group">
+                  <label for="distance-e" class="form__label">
+                    Distance
+                  </label>
+                  <input type="text" name="distance-e" id="distance-e" placeholder="km" class="form__input">
+                </div>
+                <div class="form__group">
+                  <label for="duration-e" class="form__label">
+                    Duration
+                  </label>
+                  <input type="text" name="duration-e" id="duration-e" placeholder="min" 
+                class="form__input">
+                </div>
+                <div class="form__group">
+                  <label for="cadence-e" class="form__label">
+                    Cadence
+                  </label>
+                  <input type="text" name="cadence-e" id="cadence-e" placeholder="step/min" 
+                class="form__input">
+                </div>
+                <div class="form__group">
+                  <label for="elevation-e" class="form__label">
+                    Elev Gain
+                  </label>
+                  <input type="text" name="elevation-e" id="elevation-e" placeholder="metres" 
+                class="form__input">
+                </div>
+                <div class="form__group">
+                  <label for="difficulty-e" class="form__label">
+                    Difficulty
+                  </label>
+                  <input type="text" name="difficulty-e" id="difficulty-e" placeholder="v-grade" 
+                class="form__input">
+                </div>
+                <button type="submit" class="form__btn form__btn--save">
+                  <svg class="form__btn-icon form__btn-icon--save">
+                    <use src="svg-icons/tick.png"></use>
+                  </svg>
+                  Save
+                </button>
+                <button type="button" class="form__btn form__btn--cancel">
+                  <svg class="form__btn-icon form__btn-icon--cancel">
+                    <use src="svg-icons/cross.png"></use>
+                  </svg>
+                  Cancel
+                </button>
+
+                <div class="form-control hidden" id="form-editing-control">
+                  <h4 class="form-control__title">
+                    All input fields must be positive numbers
+                  </h4>
+                  <button type="button" class="form__btn form__btn--dismiss">
+                    <svg class="form__btn-icon form__btn-icon--save">
+                      <use src="svg-icons/tick.png"></use>
+                    </svg>
+                    OK, got it
+                  </button>
+              </form>
+            </div>
+          
+          
+      
           <!-- <li class="workout workout--running" data-id="1234567890">
           <h2 class="workout__title">Run on April 14</h2>
           <div class="workout__details">
