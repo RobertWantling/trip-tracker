@@ -241,7 +241,19 @@ class App {
     // 'this' keyword on newWorkout will have the DOM el from 'form' el - meaning 'this' keyword will point to form and not App object - fix it by using 'bind()'
 
     // listen to input of 'type' to allow change to input fields
-    inputType.addEventListener('change', this._toggleElevationField);
+    inputType.addEventListener(
+      'change',
+      this._toggleElevationField.bind('_', inputCadence, inputElevation),
+      workoutTypeEditForm.addEventListener(
+        'change',
+        this._toggleElevationField.bind(
+          '_',
+          workoutCadenceEditForm,
+          workoutElevationEditForm
+        )
+      )
+      form.addEventListener('submit', this._newWorkout.bind(this))
+    );
 
     // When have el that want to attach to event listener but hasnt been created yet - will use event delegation - add to constructor so its added right at the beginning
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
