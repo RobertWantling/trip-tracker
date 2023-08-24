@@ -251,8 +251,9 @@ class App {
           workoutCadenceEditForm,
           workoutElevationEditForm
         )
-      )
-      form.addEventListener('submit', this._newWorkout.bind(this))
+      ),
+      // form.addEventListener('submit', this._newWorkout.bind(this))
+      // formEdit.addEventListener('submit', this._editWorkout.bind(this));
     );
 
     // When have el that want to attach to event listener but hasnt been created yet - will use event delegation - add to constructor so its added right at the beginning
@@ -908,6 +909,16 @@ class App {
   }
 }
 
+_editWorkout(e) {
+  // disable submit (will load page by default)
+  e.preventDefault();
+  const checkNumbers = function (...inputs) {
+    return inputs.every(input => Number.isFinite(input))
+  }
+  const allPositive = function (...inputs) {
+    return inputs.every(input => > 0);
+  }
+}
 ////////////////////////////////////////////////////////////////////////////
 // create object out of this ^^ class (app)
 const app = new App();
