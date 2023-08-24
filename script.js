@@ -73,8 +73,16 @@ class Running extends Workout {
 class Cycling extends Workout {
   // defining field - will now be available on all instances - same as this.type = 'cycling
   type = 'cycling';
-  constructor(mapWorkoutObj, coords, distance, duration, elevationGain) {
-    super(mapWorkoutObj, coords, distance, duration);
+  constructor(
+    mapWorkoutObj,
+    coords,
+    distance,
+    city,
+    country,
+    duration,
+    elevationGain
+  ) {
+    super(mapWorkoutObj, coords, distance, duration, city, country);
     this.elevationGain = elevationGain;
     this.calcSpeed();
     this._setDescription();
@@ -90,8 +98,16 @@ class Cycling extends Workout {
 
 class Hiking extends Workout {
   type = 'hiking';
-  constructor(mapWorkoutObj, coords, distance, duration, elevationGain) {
-    super(mapWorkoutObj, coords, distance, duration);
+  constructor(
+    mapWorkoutObj,
+    coords,
+    distance,
+    duration,
+    city,
+    country,
+    elevationGain
+  ) {
+    super(mapWorkoutObj, coords, distance, duration, city, country);
     this.elevationGain = elevationGain;
     this._setDescription();
   }
@@ -99,8 +115,16 @@ class Hiking extends Workout {
 
 class Walking extends Workout {
   type = 'walking';
-  constructor(mapWorkoutObj, coords, distance, duration, cadence) {
-    super(mapWorkoutObj, coords, distance, duration);
+  constructor(
+    mapWorkoutObj,
+    coords,
+    distance,
+    duration,
+    city,
+    country,
+    cadence
+  ) {
+    super(mapWorkoutObj, coords, distance, duration, city, country);
     this.cadence = cadence;
     this.calcPace();
     this._setDescription();
@@ -115,8 +139,8 @@ class Walking extends Workout {
 
 class Climbing extends Workout {
   type = 'climbing';
-  constructor(mapWorkoutObj, coords, distance, duration, grade) {
-    super(mapWorkoutObj, coords, distance, duration);
+  constructor(mapWorkoutObj, coords, distance, duration, city, country, grade) {
+    super(mapWorkoutObj, coords, distance, duration, city, country);
     this.grade = grade;
     this._setDescription();
   }
@@ -221,6 +245,22 @@ class App {
 
     // When have el that want to attach to event listener but hasnt been created yet - will use event delegation - add to constructor so its added right at the beginning
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
+  }
+
+  // CHECK IF MOBILE MEDIA QUERY /////////////////////////////////////////////////////
+  _checkMobile() {
+    if (window.innerWidth < 768) {
+      window.addEventListener('resize', function () {
+        if (
+          !form.classList.contains('hidden') ||
+          !formEdit.classList.contains('form-editing--hidden')
+        ) {
+          this.document.querySelector('.side').style.maxHeight = '77%';
+        } else {
+          document.querySelector('.side').style.macHeight = '47%';
+        }
+      });
+    }
   }
 
   // GET POSITION ////////////////////////////////////////////////////////////////////
@@ -454,7 +494,7 @@ class App {
     // Check if data is valid
 
     // Delete workouts
-    // It s a bit tricky but easy in the end, first I add a delete button on each workout I render, then I add a addEventListener on he, e.target(delete button).parentNode.remove()  (e being the function argument on addEventListener) practically when I press delete button, javascript select that workout which is the button and then remove it.  To delete marker from map I initialize a variable layer on each coords after submit the form, then I remove it in exact same place where delete workouts. A nice explanation for parentNode you can find on w3schools. I don't really know how to explain things, but I hope you understand! :)
+    // It s a bit tricky but easy in the end, first I add a delete button on each workout I render, then I add a addEventListener on he, e.target(delete button).parentNode.remove()  (e being the function argument on addEventListener) practically when I press delete button, javascript select that workout which is the button and then remove it.  To delete marker from map I initialize a variable layer on each coords after submit the form, then I remove it in exact same place where delete workouts. A nice explanation for parentNode you can find on w3schools.
 
     // If workout running, create running object
     if (type === 'running') {
