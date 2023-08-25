@@ -89,15 +89,27 @@ a:visited {
 
 .workout {
   background-color: var(--color-light--1);
-  border-radius: 5px;
+  border-radius: 0.5rem;
   padding: 1.5rem 2.25rem;
   margin-bottom: 1.75rem;
   cursor: pointer;
-
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 0.75rem 1.5rem;
+  grid-gap: 1.5rem 1rem;
 }
+
+.workout__location {
+  font-weight: 500;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  margin-bottom: -0.5rem;
+  letter-spacing: 1px;
+}
+
 .workout--running {
   border-left: 5px solid var(--color-brand--2);
 }
@@ -318,8 +330,7 @@ a:visited {
   display: none;
 }
 
-.workout__menu-option:link,
-.workout__menu-option:visited {
+.workout__menu-option {
   text-decoration: none;
   display: block;
   padding: 0.5rem 1rem;
@@ -327,6 +338,20 @@ a:visited {
   font-weight: 500;
   transition: all 0.2s;
 }
+
+.workout__menu-options {
+  list-style: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  min-width: 18rem;
+  padding: 0.5rem 0;
+  z-index: 1000;
+  box-shadow: 0rem 1rem 1rem -0.5rem rgba(0 0 0 / 5);
+}
+
 .workout__menu-option:hover,
 .workout__menu-option:active {
   color: var(--color-light--1);

@@ -251,7 +251,7 @@ class App {
           workoutCadenceEditForm,
           workoutElevationEditForm
         )
-      ),
+      )
       // form.addEventListener('submit', this._newWorkout.bind(this))
       // formEdit.addEventListener('submit', this._editWorkout.bind(this));
     );
@@ -699,7 +699,7 @@ class App {
               href="#"
             >
               <svg class="workout__menu-icons">
-                <img src="svg-icons/sprite.svg"></img>
+                <img class="workout__menu-icons" src="svg-icons/edit-icon.png"></img>
               </svg>
               Edit Workout
             </a>
@@ -710,7 +710,7 @@ class App {
               href="#"
             >
               <svg class="workout__menu-icons">
-                <img src="svg-icons/sprite.svg"></img>
+                <img class="workout__menu-icons" src="svg-icons/cross.png"></img>
               </svg>
               Delete Workout
             </a>
@@ -907,27 +907,36 @@ class App {
     // 'location' big object contains lots of methods n props in browser has ability to reload page
     location.reload();
   }
-}
 
-_showEditForm(e) {
-  const wokroutListEl = e.target.cloest('.workout');
+  _showEditForm(e) {
+    const wokroutListEl = e.target.cloest('.workout');
 
-  // Fill the edit-form with current workout values and cadence/el fields
-  const workout = this.#workouts.find(workout => workout.id === wokroutListEl.dataset.id);
+    // Fill the edit-form with current workout values and cadence/el fields
+    const workout = this.#workouts.find(
+      workout => workout.id === wokroutListEl.dataset.id
+    );
 
-  if
-}
-
-_editWorkout(e) {
-  // disable submit (will load page by default)
-  e.preventDefault();
-  const checkNumbers = function (...inputs) {
-    return inputs.every(input => Number.isFinite(input))
-  }
-  const allPositive = function (...inputs) {
-    return inputs.every(input => > 0);
+    if (workout.type === 'running') {
+      workoutTypeEditForm
+        .querySelectorAll('option')
+        .forEach(option => option.removeAttribute('selected'));
+      workoutTypeEditForm
+        .querySelector('option[value=running]')
+        .setAttribute('selected', 'selected');
+    }
   }
 }
+
+// _editWorkout(e) {
+// disable submit (will load page by default)
+// e.preventDefault();
+// const checkNumbers = function (...inputs) {
+// return inputs.every(input => Number.isFinite(input))
+// }
+// const allPositive = function (...inputs) {
+// return inputs.every(input => 0);
+// }
+// }
 ////////////////////////////////////////////////////////////////////////////
 // create object out of this ^^ class (app)
 const app = new App();
