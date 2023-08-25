@@ -695,7 +695,7 @@ class App {
     <ul class="workout__menu-options workout__menu-options--hidden">
           <li>
             <a
-              class="workout__menu-options workout__menu-option--edit"
+              class="workout__menu-option workout__menu-option--edit"
               href="#"
             >
               <svg class="workout__menu-icons">
@@ -706,7 +706,7 @@ class App {
           </li>
           <li>
             <a
-              class="workout__menu-options workout__menu-option--delete"
+              class="workout__menu-option workout__menu-option--delete"
               href="#"
             >
               <svg class="workout__menu-icons">
