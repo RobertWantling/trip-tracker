@@ -681,11 +681,11 @@ class App {
     // data-id - used as custom data attribute, use data properties like this to build a bridge between UI and data that have on application
     let html = ` 
 
-   <li class="workout workout--${workout.type}" data-id="${workout.id}">
+   <div class="workout workout--${workout.type}" data-id="${workout.id}">
    <h4 class="workout__location">
-    <svg class="workout__location-icon">
-        <img src="svg-icons/location-pin.png"></img>
-    </svg>
+    <div class="workout__location-icon">
+        <img class="workout__location-icon" src="svg-icons/location-pin.png"></img>
+    </div>
    </h4>
    <h2 class="workout__title">${workout.description}</h2>
     <div class="workout__menu">
