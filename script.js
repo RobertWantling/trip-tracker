@@ -909,6 +909,15 @@ class App {
   }
 }
 
+_showEditForm(e) {
+  const wokroutListEl = e.target.cloest('.workout');
+
+  // Fill the edit-form with current workout values and cadence/el fields
+  const workout = this.#workouts.find(workout => workout.id === wokroutListEl.dataset.id);
+
+  if
+}
+
 _editWorkout(e) {
   // disable submit (will load page by default)
   e.preventDefault();
