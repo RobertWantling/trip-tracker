@@ -191,6 +191,7 @@ class DrawMarker {
 
 // APPLICATION ARCHITECTURE
 // Variable input types
+const workoutContainer = document.querySelector('.workouts');
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
 const inputType = document.querySelector('.form__input--type');
@@ -978,6 +979,17 @@ class App {
 
     workoutDistanceEditForm.value = workout.distance;
     workoutDurationEditForm.value = workout.duration;
+
+    formEdit.style.top = `${
+      wokroutListEl.getBoundingClientRect().top -
+      workoutContainer.getBoundingClientRect().top +
+      workoutContainer.scrollTop
+    }px`;
+
+    setTimeout(() => formEdit.classList.add('animated', 'active'), 0);
+
+    // Prevents the user from scrolling the .workout div whilst edit form is visible
+    workoutContainer.style.overflowY = 'hidden';
   }
 }
 
