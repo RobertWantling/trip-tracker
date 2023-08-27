@@ -923,6 +923,10 @@ class App {
       workoutTypeEditForm
         .querySelector('option[value=running]')
         .setAttribute('selected', 'selected');
+
+      workoutCadenceEditForm
+        .closest('.form__group')
+        .classList.add('form__group--hidden');
     }
   }
 }
