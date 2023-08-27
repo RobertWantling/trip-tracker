@@ -920,6 +920,7 @@ class App {
       workoutTypeEditForm
         .querySelectorAll('option')
         .forEach(option => option.removeAttribute('selected'));
+
       workoutTypeEditForm
         .querySelector('option[value=running]')
         .setAttribute('selected', 'selected');
@@ -927,7 +928,56 @@ class App {
       workoutCadenceEditForm
         .closest('.form__group')
         .classList.add('form__group--hidden');
+
+      workoutElevationEditForm
+        .closest('.form__group')
+        .classList.add('.form__group--hidden');
+
+      workoutCadenceEditForm.value = workout.cadence;
     }
+
+    if (workout.type === 'cycling') {
+      workoutTypeEditForm
+        .querySelectorAll('option')
+        .forEach(option => option.removeAttribute('selected'));
+
+      workoutTypeEditForm
+        .querySelector('option[value=cycling]')
+        .setAttribute('selected', 'selected');
+
+      workoutCadenceEditForm
+        .closest('.form__group')
+        .classList.add('form__group--hidden');
+
+      workoutElevationEditForm
+        .closest('.form__group')
+        .classList.add('.form__group--hidden');
+
+      workoutElevationEditForm.value = workout.elevationGain;
+    }
+
+    if (workout.type === 'climbing') {
+      workoutTypeEditForm
+        .querySelectorAll('option')
+        .forEach(option => option.removeAttribute('selected'));
+
+      workoutTypeEditForm
+        .querySelector('option[value=climbing]')
+        .setAttribute('selected', 'selected');
+
+      workoutCadenceEditForm
+        .closest('.form__group')
+        .classList.add('form__group--hidden');
+
+      workoutDifficultyEditForm
+        .closest('.form__group')
+        .classList.add('.form__group--hidden');
+
+      workoutDifficultyEditForm.value = workout.grade;
+    }
+
+    workoutDistanceEditForm.value = workout.distance;
+    workoutDurationEditForm.value = workout.duration;
   }
 }
 
