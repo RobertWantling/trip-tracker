@@ -682,7 +682,7 @@ class App {
     // data-id - used as custom data attribute, use data properties like this to build a bridge between UI and data that have on application
     let html = ` 
 
-   <div class="workout workout--${workout.type}" data-id="${workout.id}">
+   <div class="workout workout--${workout.type}${editing ? "editing" : ""}" data-id="${workout.id}">
    <h4 class="workout__location">
     <div class="workout__location-icon">
         <img class="workout__location-icon" src="svg-icons/location-pin.png"></img>
@@ -719,7 +719,21 @@ class App {
         </ul>
     </div>
    `;
+     
+    if (adding) {
+      workoutContainer.insertAdjacentElement("afterbegin", html)
+      console.log(this.#workouts);
+    }
 
+    if (editing) {
+      // Delete old workout and insert the new one in the same position
+      const currentWorkout = document.querySelector(`.workout[data-id="${workout.id}"`)
+
+      currentWorkout.display = "none";
+      currentWorkout.insertAdjacentHTML("afterend", html)
+      currentWorkout.remove()
+    }
+    
     if (workout.type === 'running')
       html += `
     <div class="workout__details">
@@ -984,25 +998,30 @@ class App {
       wokroutListEl.getBoundingClientRect().top -
       workoutContainer.getBoundingClientRect().top +
       workoutContainer.scrollTop
-    }px`;
+      }px`;
+    
+    // 
 
     setTimeout(() => formEdit.classList.add('animated', 'active'), 0);
 
     // Prevents the user from scrolling the .workout div whilst edit form is visible
     workoutContainer.style.overflowY = 'hidden';
   }
-}
 
-// _editWorkout(e) {
-// disable submit (will load page by default)
-// e.preventDefault();
-// const checkNumbers = function (...inputs) {
-// return inputs.every(input => Number.isFinite(input))
-// }
-// const allPositive = function (...inputs) {
-// return inputs.every(input => 0);
-// }
-// }
+  _editWorkout(e) {
+    // disable submit (will load page by default)
+    e.preventDefault();
+  
+    const checkNumbers = function (...inputs) {
+      return inputs.every(input => Number.isFinite(input))
+    }
+    const allPositive = function (...inputs) {
+      return inputs.every(input => 0);
+    }
+
+    // traverse the DOM to select workout el we are currently modifying
+    const workoutItem = e.target.closest(".workouts").querySelector(".editing")
+  };
 ////////////////////////////////////////////////////////////////////////////
 // create object out of this ^^ class (app)
 const app = new App();
@@ -1044,6 +1063,7 @@ Architecture: Initial Approach
 
 // splitAndMerge('My name is John', ' ');
 // splitAndMerge('My name is John', '-');
-
-let x = 0 / 0;
-console.log(x);
+// 
+// let x = 0 / 0;
+// console.log(x);
+  
