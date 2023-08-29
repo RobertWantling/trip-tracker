@@ -349,6 +349,7 @@ class App {
     // load markers and workouts from localstorage
     this.#map.whenReady(this._getLocalStorage.bind(this));
 
+    // setting menu link state based on workouts after loading from LS. If are workouts, checkworkouts will remove the disabled state from links, if no workouts function will disable the links
     this._checkWorkouts();
 
     // Init edit layers on map
