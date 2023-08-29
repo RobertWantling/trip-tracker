@@ -343,6 +343,14 @@ class App {
       )
       .openPopup();
 
+    this.#map.on('click', this._renderPopup.bind(this));
+    this.#map.on('click', this._showForm);
+
+    // load markers and workouts from localstorage
+    this.#map.whenReady(this._getLocalStorage.bind(this));
+
+    this._checkWorkouts();
+
     // Init edit layers on map
     const drawnItems = new L.FeatureGroup();
     this.#map.addLayer(drawnItems);
@@ -392,6 +400,7 @@ class App {
       .setLatLng([lat, lng])
       .setContent('Add a workout here.')
       .openOn(this.#map);
+    console.log(popup);
   }
 
   // SHOW FORM ///////////////////////////////////////////////////////////////////////
@@ -728,7 +737,7 @@ class App {
     if (editing) {
       // Delete old workout and insert the new one in the same position
       const currentWorkout = document.querySelector(
-        `.workout[data-id="${workout.id}"`
+        `.workout[data-id="${workout.id}]"`
       );
 
       currentWorkout.display = 'none';
