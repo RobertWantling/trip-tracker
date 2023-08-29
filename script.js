@@ -382,11 +382,7 @@ class App {
 
   // RENDER POPUP ///////////////////////////////////////////////////////////////////////
   _renderPopup(mapE) {
-    // if (
-    // formEdit.classList.contains('active') ||
-    // !deleteContainer.classList.contains('delete-confirmation--hidden')
-    // )
-    // return;
+    if (formEdit.classList.contains('active')) return;
 
     this.#mapEvent = mapE;
 
@@ -401,6 +397,8 @@ class App {
   // SHOW FORM ///////////////////////////////////////////////////////////////////////
 
   _showForm(mapE) {
+    if (formEdit.classList.contains('active')) return;
+
     this.#mapEvent = mapE;
     form.classList.remove('hidden');
     inputDistance.focus();
@@ -682,7 +680,9 @@ class App {
     // data-id - used as custom data attribute, use data properties like this to build a bridge between UI and data that have on application
     let html = ` 
 
-   <div class="workout workout--${workout.type}${editing ? "editing" : ""}" data-id="${workout.id}">
+   <div class="workout workout--${workout.type}${
+      editing ? 'editing' : ''
+    }" data-id="${workout.id}">
    <h4 class="workout__location">
     <div class="workout__location-icon">
         <img class="workout__location-icon" src="svg-icons/location-pin.png"></img>
@@ -719,21 +719,23 @@ class App {
         </ul>
     </div>
    `;
-     
+
     if (adding) {
-      workoutContainer.insertAdjacentElement("afterbegin", html)
+      workoutContainer.insertAdjacentElement('afterbegin', html);
       console.log(this.#workouts);
     }
 
     if (editing) {
       // Delete old workout and insert the new one in the same position
-      const currentWorkout = document.querySelector(`.workout[data-id="${workout.id}"`)
+      const currentWorkout = document.querySelector(
+        `.workout[data-id="${workout.id}"`
+      );
 
-      currentWorkout.display = "none";
-      currentWorkout.insertAdjacentHTML("afterend", html)
-      currentWorkout.remove()
+      currentWorkout.display = 'none';
+      currentWorkout.insertAdjacentHTML('afterend', html);
+      currentWorkout.remove();
     }
-    
+
     if (workout.type === 'running')
       html += `
     <div class="workout__details">
@@ -861,8 +863,7 @@ class App {
     if (
       (!e.target.closest('.workout__menu') &&
         !e.target.cloest('.menu__option')) ||
-      formEdit.classList.contains('active') ||
-      !deleteContainer.classList.contains
+      formEdit.classList.contains('active')
     )
       'delete-confirmation--hidden';
   }
@@ -998,10 +999,14 @@ class App {
       wokroutListEl.getBoundingClientRect().top -
       workoutContainer.getBoundingClientRect().top +
       workoutContainer.scrollTop
-      }px`;
-    
-    // 
+    }px`;
 
+    // moving the workout list item and displaying edit form
+    formEdit.classList.remove('.form-editing--hidden');
+    wokroutListEl.classList.add('editing');
+
+    // SetTimeout is crucial to obtain visual effect of edit form sliding at same time as the workout list item. Without it the form would just appear suddenly without any animation
+    // adding an active class just for control, no actual style included because dont want user to show the add-workout form and the popup when the edit-form is visible
     setTimeout(() => formEdit.classList.add('animated', 'active'), 0);
 
     // Prevents the user from scrolling the .workout div whilst edit form is visible
@@ -1011,17 +1016,18 @@ class App {
   _editWorkout(e) {
     // disable submit (will load page by default)
     e.preventDefault();
-  
+
     const checkNumbers = function (...inputs) {
-      return inputs.every(input => Number.isFinite(input))
-    }
+      return inputs.every(input => Number.isFinite(input));
+    };
     const allPositive = function (...inputs) {
       return inputs.every(input => 0);
-    }
+    };
 
     // traverse the DOM to select workout el we are currently modifying
-    const workoutItem = e.target.closest(".workouts").querySelector(".editing")
-  };
+    const workoutItem = e.target.closest('.workouts').querySelector('.editing');
+  }
+}
 ////////////////////////////////////////////////////////////////////////////
 // create object out of this ^^ class (app)
 const app = new App();
@@ -1063,7 +1069,6 @@ Architecture: Initial Approach
 
 // splitAndMerge('My name is John', ' ');
 // splitAndMerge('My name is John', '-');
-// 
+//
 // let x = 0 / 0;
 // console.log(x);
-  
