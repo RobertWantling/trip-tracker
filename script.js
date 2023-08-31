@@ -1036,6 +1036,21 @@ class App {
 
     // traverse the DOM to select workout el we are currently modifying
     const workoutItem = e.target.closest('.workouts').querySelector('.editing');
+    const workoutId = workoutItem.dataset.id;
+    // finding the workout in this.workouts array
+    const workout = this.#workouts.find(workout => workout.id === workoutId);
+
+    // collect form data
+    const type = workoutTypeEditForm.value;
+    const distance = +workoutDistanceEditForm.value;
+    const duration = +workoutDurationEditForm.value;
+
+    // If the user keeps the same type of workout after the edit, have to simply replace the old value in the workout array with the new ones, but if user changes the type we have to delete the old wokrout type from the array and push the new workout type (new object) in the same position becvause the two object classes are different. (running has pace, cycling has speed). Then if the user changes the type we also need to change the description and the color in the popup and the colour (and info) of the workout list item
+
+    // Scenario 1: User keeps running workout
+    if (type === 'running' && workout.type === 'running') {
+      const cadence = +workoutCadenceEditForm.value;
+    }
   }
 }
 ////////////////////////////////////////////////////////////////////////////
