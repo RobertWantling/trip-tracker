@@ -343,14 +343,14 @@ class App {
       )
       .openPopup();
 
-    this.#map.on('click', this._renderPopup.bind(this));
-    this.#map.on('click', this._showForm);
+    // this.#map.on("click", this._renderPopup.bind(this));
+    // this.#map.on("click", this._showForm);
 
     // load markers and workouts from localstorage
-    this.#map.whenReady(this._getLocalStorage.bind(this));
+    // this.#map.whenReady(this._getLocalStorage.bind(this));
 
     // setting menu link state based on workouts after loading from LS. If are workouts, checkworkouts will remove the disabled state from links, if no workouts function will disable the links
-    this._checkWorkouts();
+    // this._checkWorkouts();
 
     // Init edit layers on map
     const drawnItems = new L.FeatureGroup();
@@ -401,7 +401,7 @@ class App {
       .setLatLng([lat, lng])
       .setContent('Add a workout here.')
       .openOn(this.#map);
-    console.log(popup);
+    // console.log(popup);
   }
 
   // SHOW FORM ///////////////////////////////////////////////////////////////////////
@@ -603,6 +603,8 @@ class App {
     this._highlightWorkout();
 
     this._iconSelect(workout);
+
+    this._renderPopup(mapE);
   }
 
   // RENDER WORKOUT MARKER /////////////////////////////////////////////////////////////////////
@@ -1050,6 +1052,10 @@ class App {
     // Scenario 1: User keeps running workout
     if (type === 'running' && workout.type === 'running') {
       const cadence = +workoutCadenceEditForm.value;
+
+      // checking the form values / throwing error feedback, modify the data
+      if (!checkNumbers()) {
+      }
     }
   }
 }
