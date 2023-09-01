@@ -1098,8 +1098,14 @@ class App {
       const cadence = +workoutCadenceEditForm.value;
 
       // checking the form values / throwing error feedback, modify the data
-      if (!checkNumbers()) {
+      if (
+        !checkNumbers(distance, duration, cadence) ||
+        !allPositive(distance, duration, cadence)
+      ) {
+        formEditError.classList.remove('hidden');
+        return;
       }
+      // update the values of the workout object
     }
   }
 }
