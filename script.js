@@ -225,6 +225,8 @@ class App {
   #userCoords = [];
   #mapZoomLevel = 13;
   #workoutMarkers = [];
+  #isEditt;
+  #workItemInEdit;
 
   ////////////////////////////////////////////////////////////////////////////
 
@@ -902,6 +904,14 @@ class App {
 
     // using the public interface
     // workout.click();
+  }
+
+  _updateWorkout() {
+    if (e.key === 'Enter' && this.isEdit) {
+      const workoutIdx = this.#workouts.findIndex(
+        i => i.id == this.#workItemInEdit.id
+      );
+    }
   }
 
   // doesnt need any parameters as get workouts from workout property
