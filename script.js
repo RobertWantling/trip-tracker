@@ -917,35 +917,13 @@ class App {
     location.reload();
   }
 
-  _updateWorkout() {
-    if (e.key === 'Enter' && this.isEdit) {
-      const workoutIdx = this.#workouts.findIndex(
-        i => i.id == this.#workItemInEdit.id
-      );
-
-      const distance = +document.querySelector('.edit_distance').value;
-      const duration = +document.querySelector('.edit_duration').value;
-
-      if (this.#workItemInEdit.type === 'running') {
-        const cadence = +document.querySelector('.edit_cadence').value;
-        const pace = +document.querySelector('.edit_pace').value;
-
-        if (
-          !this.validInputs(distance, duration, cadence, pace) ||
-          !this.allPositive(distance, duration, cadence, pace)
-        ) {
-          return alert(
-            'Distance, duration, cadence and pace need to be positive numbers!'
-          );
-        }
-        this.#workItemInEdit.distance = distance;
-        this.#workItemInEdit.duration = duration;
-        this.#workItemInEdit.cadence = cadence;
-        this.#workItemInEdit.pace = pace;
-        this.#workouts[workoutIdx] = this.#workItemInEdit;
-        this._refreshUi.call(this);
-      }
-    }
+  _updateWorkout(wk, distance, duration, cadence, elevation, grade) {
+    wk.distance = distance;
+    wk.duration = duration;
+    wk.cadence ? (wk.cadence = cadence) : (wk.elevationGain = elevation);
+    wk.pace
+      ? (wk.pace = duration / distance)
+      : (wk.speed = distance / duration / 60);
   }
 
   // doesnt need any parameters as get workouts from workout property
@@ -1106,6 +1084,7 @@ class App {
         return;
       }
       // update the values of the workout object
+      this._updateWorkoutObj(workout, distance, duration, cadence);
     }
   }
 }
