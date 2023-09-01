@@ -917,13 +917,33 @@ class App {
     location.reload();
   }
 
-  _updateWorkout(wk, distance, duration, cadence, elevation, grade) {
+  _updateWorkoutObj(wk, distance, duration, cadence, elevation, grade) {
     wk.distance = distance;
     wk.duration = duration;
     wk.cadence ? (wk.cadence = cadence) : (wk.elevationGain = elevation);
     wk.pace
       ? (wk.pace = duration / distance)
       : (wk.speed = distance / duration / 60);
+  }
+
+  _updateWorkout(wkItem, distance, duration, cadence, elevation) {
+    wkItem.querySelector('.workout__value--distance').textContent = distance;
+    wkItem.querySelector('.workout__value--duration').textContent = duration;
+    if (cadence) {
+      wkItem.querySelector('.workout__value--paceSpeed').textContent = (
+        duration / distance
+      ).toFixed(1);
+      wkItem.querySelector('.workout__value--cadenceElevation').textContent =
+        cadence;
+    }
+    if (elevation) {
+      wkItem.querySelector('.workout__value--paceSpeed').textContent = (
+        distance /
+        (duration / 60)
+      ).toFixed(1);
+      wkItem.querySelector('.workout__value--cadenceElevation').textContent =
+        elevation;
+    }
   }
 
   // doesnt need any parameters as get workouts from workout property
