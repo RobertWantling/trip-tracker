@@ -910,6 +910,13 @@ class App {
     // workout.click();
   }
 
+  _refreshUi() {
+    this.#isEdit = false;
+    this.#workItemInEdit = '';
+    this._setLocalStorage();
+    location.reload();
+  }
+
   _updateWorkout() {
     if (e.key === 'Enter' && this.isEdit) {
       const workoutIdx = this.#workouts.findIndex(
