@@ -531,7 +531,9 @@ class App {
         !validInputs(distance, duration, cadence) ||
         !allPositive(distance, duration, cadence)
       )
-        return alert('Inputs have to be positive numbers!'); // if distance is NAN return asap
+        return alert(
+          'Distance, duration and cadence all need to be positive numbers!'
+        ); // if distance is NAN return asap
 
       workout = new Running(workoutMapProps, distance, duration, cadence); // redefine workout so able to access out of scope
     }
@@ -544,7 +546,7 @@ class App {
         !validInputs(distance, duration, elevation) ||
         !allPositive(distance, duration)
       )
-        return alert('Inputs have to be positive numbers!');
+        return alert('Distance and duration need to be positive numbers!');
 
       workout = new Cycling(workoutMapProps, distance, duration, elevation);
     }
@@ -556,7 +558,7 @@ class App {
         !validInputs(distance, duration, elevation) ||
         !allPositive(distance, duration, elevation)
       )
-        return alert('Inputs have to be positive numbers!');
+        return alert('Distance, duration need to be positive numbers!');
 
       workout = new Hiking(workoutMapProps, distance, duration, elevation);
     }
@@ -568,7 +570,9 @@ class App {
         !validInputs(distance, duration, cadence) ||
         !allPositive(distance, duration, cadence)
       )
-        return alert('Inputs have to be positive numbers!');
+        return alert(
+          'Distance, duration and cadence need to be positive numbers!'
+        );
 
       workout = new Walking(workoutMapProps, distance, duration, cadence);
     }
@@ -580,7 +584,7 @@ class App {
         !validInputs(distance, duration, grade) ||
         !allPositive(distance, duration, grade)
       )
-        return alert('Inputs have to be positive numbers!');
+        return alert('Distance, duration need to be positive numbers!');
 
       workout = new Climbing(workoutMapProps, distance, duration, grade);
     }
@@ -911,6 +915,29 @@ class App {
       const workoutIdx = this.#workouts.findIndex(
         i => i.id == this.#workItemInEdit.id
       );
+
+      const distance = +document.querySelector('.edit_distance').value;
+      const duration = +document.querySelector('.edit_duration').value;
+
+      if (this.#workItemInEdit.type === 'running') {
+        const cadence = +document.querySelector('.edit_cadence').value;
+        const pace = +document.querySelector('.edit_pace').value;
+
+        if (
+          !this.validInputs(distance, duration, cadence, pace) ||
+          !this.allPositive(distance, duration, cadence, pace)
+        ) {
+          return alert(
+            'Distance, duration, cadence and pace need to be positive numbers!'
+          );
+        }
+        this.#workItemInEdit.distance = distance;
+        this.#workItemInEdit.duration = duration;
+        this.#workItemInEdit.cadence = cadence;
+        this.#workItemInEdit.pace = pace;
+        this.#workouts[workoutIdx] = this.#workItemInEdit;
+        this._refreshUi.call(this);
+      }
     }
   }
 
