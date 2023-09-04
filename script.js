@@ -1112,6 +1112,23 @@ class App {
       this._updateWorkoutObj(workout, distance, duration, cadence);
     }
   }
+  _cancelEdit(e) {
+    formEdit.classList.remove('animated', 'active');
+    // Find the current .editing workout and removing the class .editing to show it again
+    e.target
+      .closest('.workouts')
+      .querySelector('.editing')
+      .classList.remove('editing');
+    // Adding the class hidden class to the edit-form only after tnimation is complete to keep the sliding effect
+    // 300ms is the transition time of .workout
+    setTimeout(() => {
+      formEdit.classList.add('form-editing--hidden');
+    }, 350);
+    workoutContainer.style.overflowY = 'scroll';
+  }
+  _dismissError(e) {
+    e.target.closest('.form-control').classList.add('hidden');
+  }
 }
 ////////////////////////////////////////////////////////////////////////////
 // create object out of this ^^ class (app)
