@@ -696,7 +696,7 @@ class App {
   _renderWorkout(workout, adding = true, editing = false) {
     // create markup HTML that can insert into the DOM wherever there is a new workout
     // data-id - used as custom data attribute, use data properties like this to build a bridge between UI and data that have on application
-    const html = ` 
+    let html = ` 
 
    <div class="workout workout--${workout.type}${
       editing ? 'editing' : ''
@@ -737,19 +737,19 @@ class App {
         </ul>
     </div>
    `;
-    if (adding) {
-      workoutContainer.insertAdjacentElement('afterbegin', html);
-    }
-    if (editing) {
-      // Delete old workout and insert the new one in the same
-      position;
-      const currentWorkout = document.querySelector(
-        `.workout[data-id="${workout.id}]"`
-      );
-      currentWorkout.display = 'none';
-      currentWorkout.insertAdjacentHTML('afterend', html);
-      currentWorkout.remove();
-    }
+    // if (adding) {
+    // workoutContainer.insertAdjacentElement('afterbegin', html);
+    // }
+    // if (editing) {
+    // Delete old workout and insert the new one in the same
+    // position;
+    // const currentWorkout = document.querySelector(
+    // `.workout[data-id="${workout.id}]"`
+    // );
+    // currentWorkout.display = 'none';
+    // currentWorkout.insertAdjacentHTML('afterend', html);
+    // currentWorkout.remove();
+    // }
 
     if (workout.type === 'running')
       html += `
