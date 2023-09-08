@@ -929,6 +929,7 @@ class App {
     wk.pace
       ? (wk.pace = duration / distance)
       : (wk.speed = distance / duration / 60);
+    wk.grade = grade;
   }
 
   _updateWorkout(wkItem, distance, duration, cadence, elevation) {
