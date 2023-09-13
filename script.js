@@ -1112,6 +1112,24 @@ class App {
       // update the values of the workout object
       this._updateWorkoutObj(workout, distance, duration, cadence);
     }
+
+    // SCENARIO 2: User keeps Cycling workout
+    if (type === 'cycling' && workout.type === 'cycling') {
+      const elevation = +workoutElevationEditForm.value;
+      if (
+        !checkNumbers(distance, duration, elevation) ||
+        !allPositive(distance, duration)
+      ) {
+        formEditError.classList.remove('hidden');
+        return;
+      }
+      // Updating the values of the workout object
+      this._updateWorkoutObj(workout, distance, duration, false, elevation);
+      // Updating the values in the UI (workout list item)
+      this._updateWorkout(workoutItem, distance, duration, false, elevation);
+      // Updating the UI (visual effect removing the form)
+      this._cancelEdit(e);
+    }
   }
   _cancelEdit(e) {
     formEdit.classList.remove('animated', 'active');
