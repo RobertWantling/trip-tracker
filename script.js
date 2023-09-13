@@ -424,13 +424,13 @@ class App {
       inputCadence.value =
       inputElevation.value =
       inputGrade.value =
-        '';
+      '';
     form.style.display = 'none';
     form.classList.add('hidden');
     setTimeout(() => (form.style.display = 'grid'), 1000);
   }
 
-  _highlightWorkout() {}
+  _highlightWorkout() { }
 
   _iconSelect(workout) {
     if (workout.type === 'running') {
@@ -698,9 +698,8 @@ class App {
     // data-id - used as custom data attribute, use data properties like this to build a bridge between UI and data that have on application
     let html = ` 
 
-   <div class="workout workout--${workout.type}${
-      editing ? 'editing' : ''
-    }" data-id="${workout.id}">
+   <div class="workout workout--${workout.type}${editing ? 'editing' : ''
+      }" data-id="${workout.id}">
    <h4 class="workout__location">
     <div class="workout__location-icon">
         <img class="workout__location-icon" src="svg-icons/location-pin.png"></img>
@@ -766,15 +765,14 @@ class App {
   <div class="workout__details"> 
     <span class="workout__icon">⚡️</span>
     <span class="workout__value workout__value--paceSpeed">${workout.pace.toFixed(
-      1
-    )}</span>
+        1
+      )}</span>
     <span class="workout__unit">min/km</span>
   </div>
   <div class="workout__details">
     <span class="workout__icon">🦶🏼</span>
-    <span class="workout__value workout__value--cadenceElevation">${
-      workout.cadence
-    }</span>
+    <span class="workout__value workout__value--cadenceElevation">${workout.cadence
+        }</span>
     <span class="workout__unit">spm</span>
   </div>
   </li>
@@ -841,15 +839,14 @@ class App {
  <div class="workout__details">
    <span class="workout__icon">⚡️</span>
    <span class="workout__value workout__value--paceSpeed">${workout.pace.toFixed(
-     1
-   )}</span>
+        1
+      )}</span>
    <span class="workout__unit">km/h</span>
  </div>
  <div class="workout__details">
    <span class="workout__icon">🦶🏼</span>
-   <span class="workout__value workout__value--cadenceElevation">${
-     workout.cadence
-   }</span>
+   <span class="workout__value workout__value--cadenceElevation">${workout.cadence
+        }</span>
    <span class="workout__unit">spm</span>
  </div>`;
     if (workout.type === 'climbing')
@@ -1055,11 +1052,10 @@ class App {
     workoutDistanceEditForm.value = workout.distance;
     workoutDurationEditForm.value = workout.duration;
 
-    formEdit.style.top = `${
-      wokroutListEl.getBoundingClientRect().top -
+    formEdit.style.top = `${wokroutListEl.getBoundingClientRect().top -
       workoutContainer.getBoundingClientRect().top +
       workoutContainer.scrollTop
-    }px`;
+      }px`;
 
     // moving the workout list item and displaying edit form
     formEdit.classList.remove('.form-editing--hidden');
@@ -1130,23 +1126,37 @@ class App {
       // Updating the UI (visual effect removing the form)
       this._cancelEdit(e);
     }
-  }
-  _cancelEdit(e) {
-    formEdit.classList.remove('animated', 'active');
-    // Find the current .editing workout and removing the class .editing to show it again
-    e.target
-      .closest('.workouts')
-      .querySelector('.editing')
-      .classList.remove('editing');
-    // Adding the class hidden class to the edit-form only after tnimation is complete to keep the sliding effect
-    // 300ms is the transition time of .workout
-    setTimeout(() => {
-      formEdit.classList.add('form-editing--hidden');
-    }, 350);
-    workoutContainer.style.overflowY = 'scroll';
-  }
-  _dismissError(e) {
-    e.target.closest('.form-control').classList.add('hidden');
+
+    // SCENARIO 3: User switch from running to cycling
+    if (type === "cycling" && workout.type === "running") {
+      const elevation = +workoutElevationEditForm.value;
+      if (
+        !checkNumbers(distance, duration, elevation) ||
+        !allPositive(distance, duration)
+      ) {
+        formEditError.classList.remove("hidden");
+        return;
+      }
+    }
+    
+    _cancelEdit(e) {
+      formEdit.classList.remove('animated', 'active');
+      // Find the current .editing workout and removing the class .editing to show it again
+      e.target
+        .closest('.workouts')
+        .querySelector('.editing')
+        .classList.remove('editing');
+      // Adding the class hidden class to the edit-form only after tnimation is complete to keep the sliding effect
+      // 300ms is the transition time of .workout
+      setTimeout(() => {
+        formEdit.classList.add('form-editing--hidden');
+      }, 350);
+      workoutContainer.style.overflowY = 'scroll';
+    }
+
+    _dismissError(e) {
+      e.target.closest('.form-control').classList.add('hidden');
+    }
   }
 }
 ////////////////////////////////////////////////////////////////////////////
