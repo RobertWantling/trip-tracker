@@ -949,6 +949,18 @@ class App {
     }
   }
 
+  _handleDelete(e) {
+  // If the user clicks outside of the buttons exit this function
+  const btn = e.target.closest(".delete-confirmation__btn");
+  if (!btn) return;
+  // Confirm deleting --> delete all workouts
+  if (btn.classList.contains("delete-confirmation__btn--yes")) {
+    // Closing the delete box  and removing the active class from the link
+    deleteContainer.classList.add("delete-confirmation--hidden");
+    document.querySelector(".menu__link.active").classList.remove("active");
+    // Delete all workouts from workouts array
+    this.#workouts.splice(0);
+
   // doesnt need any parameters as get workouts from workout property
   // In practise only use local storage for small amounts of data (blocking issue)
   _setLocalStorage() {
