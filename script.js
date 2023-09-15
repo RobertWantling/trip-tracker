@@ -961,6 +961,25 @@ class App {
     // Delete all workouts from workouts array
     this.#workouts.splice(0);
 
+    // Deleting the ui elements AFTER delete box has closed so i use a timeout
+  // Using an external function for binding the this keyword insisde seTimeout  ()
+  const deleteFn = function () {
+    // Delete all workouts from List (UI)
+    document
+      .querySelectorAll(".workout")
+      .forEach(workoutEl => workoutEl.remove());
+    // Delete all markers from Map (UI)
+    this.#workoutMarkers.forEach(marker => {
+      this.#map.removeLayer(marker);
+    });
+    // Delete all markers from workoutMarkers array (needs to happen after  deleting from UI because if it happen before it the #workoutMarkers array  will be empty)
+    this.#workoutMarkers.splice(0);
+    // Positioning the map on the current location
+    this.#map.setView(this.#userCoords, this.#mapZoomLevel, {
+      animate: true,
+      duration: 1.2,
+    });
+
   // doesnt need any parameters as get workouts from workout property
   // In practise only use local storage for small amounts of data (blocking issue)
   _setLocalStorage() {
